@@ -72,28 +72,28 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| RECIPE-01 | — | Pending |
-| RECIPE-02 | — | Pending |
-| RECIPE-03 | — | Pending |
-| RECIPE-04 | — | Pending |
-| RECIPE-05 | — | Pending |
-| RECIPE-06 | — | Pending |
-| PLAN-01 | — | Pending |
-| PLAN-02 | — | Pending |
-| PLAN-03 | — | Pending |
-| GROC-01 | — | Pending |
-| GROC-02 | — | Pending |
-| GROC-03 | — | Pending |
-| GROC-04 | — | Pending |
-| SYNC-01 | — | Pending |
-| SYNC-02 | — | Pending |
-| UI-01 | — | Pending |
+| RECIPE-01 | Phase 2 | Pending |
+| RECIPE-02 | Phase 2 | Pending |
+| RECIPE-03 | Phase 2 | Pending |
+| RECIPE-04 | Phase 5 | Pending |
+| RECIPE-05 | Phase 2 | Pending |
+| RECIPE-06 | Phase 2 | Pending |
+| PLAN-01 | Phase 3 | Pending |
+| PLAN-02 | Phase 3 | Pending |
+| PLAN-03 | Phase 3 | Pending |
+| GROC-01 | Phase 4 | Pending |
+| GROC-02 | Phase 5 | Pending |
+| GROC-03 | Phase 4 | Pending |
+| GROC-04 | Phase 4 | Pending |
+| SYNC-01 | Phase 1 | Pending |
+| SYNC-02 | Phase 1 | Pending |
+| UI-01 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 16 total
-- Mapped to phases: 0
-- Unmapped: 16
+- Mapped to phases: 16
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-20 after initial definition*
+*Last updated: 2026-01-20 after roadmap creation*
