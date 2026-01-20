@@ -28,12 +28,12 @@ MealPlan delivers real-time collaborative meal planning for a two-person househo
   3. App displays in dark mode theme consistently across all screens
   4. Changes made on one device appear on another device within seconds (real-time sync working)
   5. App connects to Convex backend with hardcoded household ID (no login required)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md — Install dependencies, configure TypeScript/Expo Router, setup Convex backend with schema
+- [ ] 01-02-PLAN.md — Create tab navigation with dark mode theme and placeholder screens
+- [ ] 01-03-PLAN.md — Verify real-time sync and get user approval
 
 ### Phase 2: Recipe Management
 **Goal**: Users can build and manage their recipe collection
@@ -105,7 +105,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/3 | Not started | - |
+| 1. Foundation | 0/3 | Planned | - |
 | 2. Recipe Management | 0/3 | Not started | - |
 | 3. Meal Planning | 0/2 | Not started | - |
 | 4. Grocery Lists | 0/2 | Not started | - |
