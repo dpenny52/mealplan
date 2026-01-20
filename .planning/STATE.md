@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Both users can see and edit the same meal plan in real-time, making weekly meal coordination effortless.
-**Current focus:** Phase 2 Recipe Management - Recipe Detail Screen complete
+**Current focus:** Phase 2 Complete - Ready for Phase 3
 
 ## Current Position
 
-Phase: 2 of 5 (Recipe Management)
-Plan: 4 of 5 in phase 2
-Status: In progress
-Last activity: 2026-01-20 - Completed 02-04-PLAN.md (recipe detail screen with scaling)
+Phase: 2 of 5 (Recipe Management) - COMPLETE
+Plan: 5 of 5 in phase 2 (all complete)
+Status: Phase complete
+Last activity: 2026-01-20 - Completed 02-05-PLAN.md (drag reorder + verification)
 
-Progress: [========..] 80% (7/8+ plans complete)
+Progress: [======....] 62% (8/13 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: ~4.5 minutes
-- Total execution time: ~33 minutes
+- Total plans completed: 8
+- Average duration: ~5 minutes
+- Total execution time: ~40 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3 | ~21 min | ~7 min |
-| 02-recipe-management | 4 | ~12 min | ~3 min |
+| 02-recipe-management | 5 | ~19 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (~3 min), 02-02 (~4 min), 02-03 (~2 min), 02-04 (~3 min)
-- Trend: Fast execution for UI plans with existing backend
+- Last 5 plans: 02-01 (~3 min), 02-02 (~4 min), 02-03 (~2 min), 02-04 (~3 min), 02-05 (~15 min)
+- Trend: Fast execution, 02-05 included user checkpoint
 
 *Updated after each plan completion*
 
@@ -82,13 +82,18 @@ Recent decisions affecting current work:
 - scaledServings persists to Convex via update mutation
 - Separate component extraction for conditional hook usage (RecipeContent)
 
+**From 02-05:**
+- react-native-worklets@0.5.1 required for Expo SDK 53 with reanimated v4
+- GestureHandlerRootView must wrap app for drag gestures
+- Navigate to recipe detail after creation (better UX than returning to list)
+
 ### Pending Todos
 
 None.
 
 ### Blockers/Concerns
 
-None. Recipe detail screen with scaling complete and functional.
+None. Phase 2 recipe management complete and user-approved.
 
 ## Phase Summaries
 
@@ -97,14 +102,17 @@ None. Recipe detail screen with scaling complete and functional.
 2. **01-02 Navigation & Shell:** 3-tab layout, dark mode, provider composition
 3. **01-03 Real-time Verification:** Live data display, user approval
 
-### Phase 2 Recipe Management (In Progress)
+### Phase 2 Recipe Management (Complete)
 1. **02-01 Recipe Backend:** Full schema, CRUD mutations, file upload support
 2. **02-02 Recipe List Screen:** Card/list views, instant search, view mode persistence
 3. **02-03 Recipe Creation Wizard:** Multi-step modal wizard with image upload
 4. **02-04 Recipe Detail Screen:** Serving scaling with vulgar fractions, persistence
+5. **02-05 Drag Reorder:** Custom sort order with DraggableFlatList
+
+User verified: All 5 success criteria met. Recipe creation, list, search, scaling, and reorder all working.
 
 ## Session Continuity
 
-Last session: 2026-01-20 18:31 UTC
-Stopped at: Completed 02-04-PLAN.md (recipe detail screen with scaling)
+Last session: 2026-01-20 19:45 UTC
+Stopped at: Completed Phase 2 (all plans)
 Resume file: None

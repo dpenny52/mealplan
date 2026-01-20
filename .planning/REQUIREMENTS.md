@@ -9,12 +9,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Recipe Management
 
-- [ ] **RECIPE-01**: User can add recipes manually with title, ingredients, instructions, and metadata (prep time, servings, etc.)
-- [ ] **RECIPE-02**: User can view their collection of saved recipes
-- [ ] **RECIPE-03**: User can search and filter recipes by name or ingredient
+- [x] **RECIPE-01**: User can add recipes manually with title, ingredients, instructions, and metadata (prep time, servings, etc.)
+- [x] **RECIPE-02**: User can view their collection of saved recipes
+- [x] **RECIPE-03**: User can search and filter recipes by name or ingredient
 - [ ] **RECIPE-04**: User can take a photo of a recipe and have it extracted via Gemini AI
-- [ ] **RECIPE-05**: User can adjust recipe portions (scales ingredient quantities)
-- [ ] **RECIPE-06**: User can reorder recipes in the collection (custom sort order)
+- [x] **RECIPE-05**: User can adjust recipe portions (scales ingredient quantities)
+- [x] **RECIPE-06**: User can reorder recipes in the collection (custom sort order)
 
 ### Meal Planning
 
@@ -72,12 +72,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| RECIPE-01 | Phase 2 | Pending |
-| RECIPE-02 | Phase 2 | Pending |
-| RECIPE-03 | Phase 2 | Pending |
+| RECIPE-01 | Phase 2 | Complete |
+| RECIPE-02 | Phase 2 | Complete |
+| RECIPE-03 | Phase 2 | Complete |
 | RECIPE-04 | Phase 5 | Pending |
-| RECIPE-05 | Phase 2 | Pending |
-| RECIPE-06 | Phase 2 | Pending |
+| RECIPE-05 | Phase 2 | Complete |
+| RECIPE-06 | Phase 2 | Complete |
 | PLAN-01 | Phase 3 | Pending |
 | PLAN-02 | Phase 3 | Pending |
 | PLAN-03 | Phase 3 | Pending |

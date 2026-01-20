@@ -11,7 +11,7 @@ MealPlan delivers real-time collaborative meal planning for a two-person househo
 - Decimal phases (e.g., 2.1): Urgent insertions (marked with INSERTED)
 
 - [x] **Phase 1: Foundation** - Expo + Convex setup with navigation, schema, and dark mode
-- [ ] **Phase 2: Recipe Management** - CRUD, search, and collection management for recipes
+- [x] **Phase 2: Recipe Management** - CRUD, search, and collection management for recipes
 - [ ] **Phase 3: Meal Planning** - 4-week calendar with recipe assignment
 - [ ] **Phase 4: Grocery Lists** - Generation from meal plan, checklist, and export
 - [ ] **Phase 5: AI Features** - Photo extraction and smart ingredient aggregation
@@ -48,11 +48,11 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Install dependencies, update Convex schema, create recipe CRUD mutations
-- [ ] 02-02-PLAN.md — Build recipe list with card/list toggle views and instant search
-- [ ] 02-03-PLAN.md — Create multi-step recipe creation wizard with image upload
-- [ ] 02-04-PLAN.md — Build recipe detail screen with serving scaling and fraction display
-- [ ] 02-05-PLAN.md — Add drag-to-reorder and verify complete feature
+- [x] 02-01-PLAN.md — Install dependencies, update Convex schema, create recipe CRUD mutations
+- [x] 02-02-PLAN.md — Build recipe list with card/list toggle views and instant search
+- [x] 02-03-PLAN.md — Create multi-step recipe creation wizard with image upload
+- [x] 02-04-PLAN.md — Build recipe detail screen with serving scaling and fraction display
+- [x] 02-05-PLAN.md — Add drag-to-reorder and verify complete feature
 
 ### Phase 3: Meal Planning
 **Goal**: Users can assign recipes to days and view the 4-week rolling calendar
@@ -108,7 +108,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-01-20 |
-| 2. Recipe Management | 0/5 | Planned | - |
+| 2. Recipe Management | 5/5 | Complete | 2026-01-20 |
 | 3. Meal Planning | 0/2 | Not started | - |
 | 4. Grocery Lists | 0/2 | Not started | - |
 | 5. AI Features | 0/2 | Not started | - |
