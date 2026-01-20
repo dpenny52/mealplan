@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Both users can see and edit the same meal plan in real-time, making weekly meal coordination effortless.
-**Current focus:** Phase 1 Complete - Ready for Phase 2
+**Current focus:** Phase 2 Recipe Management - Recipe Backend complete
 
 ## Current Position
 
-Phase: 1 of 5 (Foundation) - COMPLETE
-Plan: 3 of 3 in phase 1 (all complete)
-Status: Phase complete
-Last activity: 2026-01-20 - Completed 01-03-PLAN.md (real-time sync verification)
+Phase: 2 of 5 (Recipe Management)
+Plan: 1 of 5 in phase 2
+Status: In progress
+Last activity: 2026-01-20 - Completed 02-01-PLAN.md (recipe backend)
 
-Progress: [====......] 38% (3/8 plans complete)
+Progress: [=====.....] 50% (4/8 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: ~7 minutes
-- Total execution time: ~21 minutes
+- Total plans completed: 4
+- Average duration: ~6 minutes
+- Total execution time: ~24 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3 | ~21 min | ~7 min |
+| 02-recipe-management | 1 | ~3 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~4 min), 01-02 (~2 min), 01-03 (~15 min)
-- Trend: Variable (01-03 included user checkpoint)
+- Last 5 plans: 01-01 (~4 min), 01-02 (~2 min), 01-03 (~15 min), 02-01 (~3 min)
+- Trend: Fast execution for backend-only plans
 
 *Updated after each plan completion*
 
@@ -61,25 +62,31 @@ Recent decisions affecting current work:
 - useQuery returns undefined while loading (standard Convex pattern)
 - Redirect component for entry point routing (Expo Router pattern)
 
+**From 02-01:**
+- Free-form ingredients array (string[]) for recipe schema
+- Auto-increment sortOrder on create, bulk update on reorder
+- lastUsed timestamp with index for "recently used" sorting
+
 ### Pending Todos
 
 None.
 
 ### Blockers/Concerns
 
-None. Phase 1 foundation complete and user-approved.
+None. Recipe backend deployed and ready for UI work.
 
-## Phase 1 Summary
+## Phase Summaries
 
-Phase 1 Foundation delivered:
+### Phase 1 Foundation (Complete)
 1. **01-01 Project Setup:** TypeScript, Expo Router, Convex backend, theme constants
 2. **01-02 Navigation & Shell:** 3-tab layout, dark mode, provider composition
 3. **01-03 Real-time Verification:** Live data display, user approval
 
-User verified: Navigation, dark mode, real-time sync all working correctly.
+### Phase 2 Recipe Management (In Progress)
+1. **02-01 Recipe Backend:** Full schema, CRUD mutations, file upload support
 
 ## Session Continuity
 
-Last session: 2026-01-20 18:14 UTC
-Stopped at: Completed 01-03-PLAN.md (Phase 1 complete)
+Last session: 2026-01-20 13:22 UTC
+Stopped at: Completed 02-01-PLAN.md (recipe backend)
 Resume file: None
