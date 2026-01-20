@@ -35,6 +35,16 @@ export default function RootLayout() {
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(tabs)" />
             <Stack.Screen
+              name="recipe/[id]"
+              options={{
+                headerShown: true,
+                headerBackTitle: 'Back',
+                headerStyle: { backgroundColor: Colors.surface },
+                headerTintColor: Colors.text,
+                title: '',
+              }}
+            />
+            <Stack.Screen
               name="recipe/create"
               options={{
                 presentation: 'modal',
