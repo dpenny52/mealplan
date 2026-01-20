@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Both users can see and edit the same meal plan in real-time, making weekly meal coordination effortless.
-**Current focus:** Phase 2 Recipe Management - Recipe Backend complete
+**Current focus:** Phase 2 Recipe Management - Recipe List Screen complete
 
 ## Current Position
 
 Phase: 2 of 5 (Recipe Management)
-Plan: 1 of 5 in phase 2
+Plan: 2 of 5 in phase 2
 Status: In progress
-Last activity: 2026-01-20 - Completed 02-01-PLAN.md (recipe backend)
+Last activity: 2026-01-20 - Completed 02-02-PLAN.md (recipe list screen)
 
-Progress: [=====.....] 50% (4/8 plans complete)
+Progress: [======....] 63% (5/8 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: ~6 minutes
-- Total execution time: ~24 minutes
+- Total plans completed: 5
+- Average duration: ~5.6 minutes
+- Total execution time: ~28 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3 | ~21 min | ~7 min |
-| 02-recipe-management | 1 | ~3 min | ~3 min |
+| 02-recipe-management | 2 | ~7 min | ~3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~4 min), 01-02 (~2 min), 01-03 (~15 min), 02-01 (~3 min)
-- Trend: Fast execution for backend-only plans
+- Last 5 plans: 01-02 (~2 min), 01-03 (~15 min), 02-01 (~3 min), 02-02 (~4 min)
+- Trend: Fast execution for focused plans
 
 *Updated after each plan completion*
 
@@ -67,13 +67,18 @@ Recent decisions affecting current work:
 - Auto-increment sortOrder on create, bulk update on reorder
 - lastUsed timestamp with index for "recently used" sorting
 
+**From 02-02:**
+- Client-side search filtering for instant response (no network latency)
+- AsyncStorage for view mode preference (local-only, faster than Convex)
+- Memoized FlatList header to prevent search focus loss
+
 ### Pending Todos
 
 None.
 
 ### Blockers/Concerns
 
-None. Recipe backend deployed and ready for UI work.
+None. Recipe list UI complete and ready for creation wizard.
 
 ## Phase Summaries
 
@@ -84,9 +89,10 @@ None. Recipe backend deployed and ready for UI work.
 
 ### Phase 2 Recipe Management (In Progress)
 1. **02-01 Recipe Backend:** Full schema, CRUD mutations, file upload support
+2. **02-02 Recipe List Screen:** Card/list views, instant search, view mode persistence
 
 ## Session Continuity
 
-Last session: 2026-01-20 13:22 UTC
-Stopped at: Completed 02-01-PLAN.md (recipe backend)
+Last session: 2026-01-20 14:05 UTC
+Stopped at: Completed 02-02-PLAN.md (recipe list screen)
 Resume file: None
