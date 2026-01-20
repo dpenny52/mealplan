@@ -10,7 +10,7 @@ MealPlan delivers real-time collaborative meal planning for a two-person househo
 - Integer phases (1, 2, 3, 4, 5): Planned milestone work
 - Decimal phases (e.g., 2.1): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Foundation** - Expo + Convex setup with navigation, schema, and dark mode
+- [x] **Phase 1: Foundation** - Expo + Convex setup with navigation, schema, and dark mode
 - [ ] **Phase 2: Recipe Management** - CRUD, search, and collection management for recipes
 - [ ] **Phase 3: Meal Planning** - 4-week calendar with recipe assignment
 - [ ] **Phase 4: Grocery Lists** - Generation from meal plan, checklist, and export
@@ -31,9 +31,9 @@ MealPlan delivers real-time collaborative meal planning for a two-person househo
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Install dependencies, configure TypeScript/Expo Router, setup Convex backend with schema
-- [ ] 01-02-PLAN.md — Create tab navigation with dark mode theme and placeholder screens
-- [ ] 01-03-PLAN.md — Verify real-time sync and get user approval
+- [x] 01-01-PLAN.md — Install dependencies, configure TypeScript/Expo Router, setup Convex backend with schema
+- [x] 01-02-PLAN.md — Create tab navigation with dark mode theme and placeholder screens
+- [x] 01-03-PLAN.md — Verify real-time sync and get user approval
 
 ### Phase 2: Recipe Management
 **Goal**: Users can build and manage their recipe collection
@@ -107,7 +107,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/3 | In Progress | - |
+| 1. Foundation | 3/3 | Complete | 2026-01-20 |
 | 2. Recipe Management | 0/5 | Planned | - |
 | 3. Meal Planning | 0/2 | Not started | - |
 | 4. Grocery Lists | 0/2 | Not started | - |

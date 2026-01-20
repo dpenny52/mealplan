@@ -31,12 +31,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Infrastructure
 
-- [ ] **SYNC-01**: Data syncs in real-time between household members' devices via Convex
-- [ ] **SYNC-02**: App uses hardcoded household ID (no authentication required)
+- [x] **SYNC-01**: Data syncs in real-time between household members' devices via Convex
+- [x] **SYNC-02**: App uses hardcoded household ID (no authentication required)
 
 ### User Interface
 
-- [ ] **UI-01**: App uses dark mode theme throughout
+- [x] **UI-01**: App uses dark mode theme throughout
 
 ## v2 Requirements
 
@@ -85,9 +85,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GROC-02 | Phase 5 | Pending |
 | GROC-03 | Phase 4 | Pending |
 | GROC-04 | Phase 4 | Pending |
-| SYNC-01 | Phase 1 | Pending |
-| SYNC-02 | Phase 1 | Pending |
-| UI-01 | Phase 1 | Pending |
+| SYNC-01 | Phase 1 | Complete |
+| SYNC-02 | Phase 1 | Complete |
+| UI-01 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 16 total
