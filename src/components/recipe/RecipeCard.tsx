@@ -15,18 +15,23 @@ export interface RecipeCardProps {
     imageUrl?: string | null;
   };
   onPress: (id: Id<'recipes'>) => void;
+  onLongPress?: () => void;
+  isActive?: boolean;
 }
 
 /**
  * Card view component for recipe grid display.
  * Shows recipe image (or placeholder) with title below.
+ * Note: Drag-to-reorder is only supported in list view due to grid complexity.
  */
-export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
+export function RecipeCard({ recipe, onPress, onLongPress, isActive }: RecipeCardProps) {
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container, isActive && styles.activeContainer]}
       onPress={() => onPress(recipe._id)}
+      onLongPress={onLongPress}
       activeOpacity={0.8}
+      disabled={isActive}
     >
       <View style={styles.imageContainer}>
         {recipe.imageUrl ? (
@@ -53,6 +58,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
     marginBottom: CARD_GAP,
+  },
+  activeContainer: {
+    backgroundColor: Colors.primary + '20',
+    transform: [{ scale: 1.02 }],
   },
   imageContainer: {
     width: '100%',

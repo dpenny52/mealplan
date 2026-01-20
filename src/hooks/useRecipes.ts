@@ -12,6 +12,15 @@ export function useRecipes() {
 }
 
 /**
+ * Hook to fetch all recipes for the household sorted by sortOrder.
+ * Used for drag-to-reorder feature where custom order matters.
+ * Returns undefined while loading, then the sorted recipe list.
+ */
+export function useSortedRecipes() {
+  return useQuery(api.recipes.listSorted, { householdId: HOUSEHOLD_ID });
+}
+
+/**
  * Hook to fetch and filter recipes by search query.
  * Filters client-side for instant response as user types.
  *

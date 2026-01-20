@@ -9,14 +9,23 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { useMutation } from 'convex/react';
 import { Ionicons } from '@expo/vector-icons';
+import DraggableFlatList, {
+  ScaleDecorator,
+  RenderItemParams,
+} from 'react-native-draggable-flatlist';
 import { Colors, Spacing } from '@/constants/theme';
-import { useFilteredRecipes } from '@/hooks/useRecipes';
+import { useFilteredRecipes, useSortedRecipes } from '@/hooks/useRecipes';
 import { useViewMode } from '@/hooks/useViewMode';
 import { RecipeCard } from '@/components/recipe/RecipeCard';
 import { RecipeListItem } from '@/components/recipe/RecipeListItem';
 import { RecipeSearch } from '@/components/recipe/RecipeSearch';
+import { api } from '../../../convex/_generated/api';
 import { Id } from '../../../convex/_generated/dataModel';
+
+// Type for recipe items returned from hooks
+type RecipeItem = NonNullable<ReturnType<typeof useSortedRecipes>>[number];
 
 export default function RecipesScreen() {
   const insets = useSafeAreaInsets();
@@ -24,7 +33,16 @@ export default function RecipesScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const { viewMode, toggleViewMode, isLoading: viewModeLoading } = useViewMode();
 
-  const recipes = useFilteredRecipes(searchQuery);
+  // Use sorted recipes for list mode (supports reordering), filtered for card mode
+  const sortedRecipes = useSortedRecipes();
+  const filteredRecipes = useFilteredRecipes(searchQuery);
+  const updateSortOrder = useMutation(api.recipes.updateSortOrder);
+
+  // In list mode without search, use sorted recipes for drag-to-reorder
+  // Otherwise use filtered recipes
+  const hasSearchQuery = searchQuery.trim().length > 0;
+  const recipes =
+    viewMode === 'list' && !hasSearchQuery ? sortedRecipes : filteredRecipes;
   const isLoading = recipes === undefined;
 
   const handleRecipePress = useCallback(
@@ -53,17 +71,46 @@ export default function RecipesScreen() {
 
   // Render functions for different view modes
   const renderCardItem = useCallback(
-    ({ item }: { item: NonNullable<typeof recipes>[number] }) => (
+    ({ item }: { item: RecipeItem }) => (
       <RecipeCard recipe={item} onPress={handleRecipePress} />
     ),
     [handleRecipePress]
   );
 
+  // Draggable render item for list mode (uses ScaleDecorator for visual feedback)
+  const renderDraggableItem = useCallback(
+    ({ item, drag, isActive }: RenderItemParams<RecipeItem>) => (
+      <ScaleDecorator>
+        <RecipeListItem
+          recipe={item}
+          onPress={handleRecipePress}
+          onLongPress={drag}
+          isActive={isActive}
+        />
+      </ScaleDecorator>
+    ),
+    [handleRecipePress]
+  );
+
+  // Regular list item for when search is active (no drag)
   const renderListItem = useCallback(
-    ({ item }: { item: NonNullable<typeof recipes>[number] }) => (
+    ({ item }: { item: RecipeItem }) => (
       <RecipeListItem recipe={item} onPress={handleRecipePress} />
     ),
     [handleRecipePress]
+  );
+
+  // Handle drag end - update sort order in Convex
+  const handleDragEnd = useCallback(
+    ({ data }: { data: RecipeItem[] }) => {
+      // Build updates array with new sort order
+      const updates = data.map((recipe, index) => ({
+        id: recipe._id,
+        sortOrder: index,
+      }));
+      updateSortOrder({ updates });
+    },
+    [updateSortOrder]
   );
 
   // Empty state content
@@ -118,14 +165,15 @@ export default function RecipesScreen() {
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={Colors.primary} />
         </View>
-      ) : (
+      ) : viewMode === 'card' ? (
+        // Card mode - use regular FlatList with grid
         <FlatList
           data={recipes}
-          key={viewMode} // Force re-mount when view mode changes (numColumns changes)
+          key="card"
           keyExtractor={(item) => item._id}
-          renderItem={viewMode === 'card' ? renderCardItem : renderListItem}
-          numColumns={viewMode === 'card' ? 2 : 1}
-          columnWrapperStyle={viewMode === 'card' ? styles.cardRow : undefined}
+          renderItem={renderCardItem}
+          numColumns={2}
+          columnWrapperStyle={styles.cardRow}
           contentContainerStyle={[
             styles.listContent,
             recipes.length === 0 && styles.emptyListContent,
@@ -134,6 +182,44 @@ export default function RecipesScreen() {
           ListEmptyComponent={EmptyState}
           showsVerticalScrollIndicator={false}
         />
+      ) : hasSearchQuery ? (
+        // List mode with search - use regular FlatList (no drag during search)
+        <FlatList
+          data={recipes}
+          key="list-search"
+          keyExtractor={(item) => item._id}
+          renderItem={renderListItem}
+          contentContainerStyle={[
+            styles.listContent,
+            recipes.length === 0 && styles.emptyListContent,
+          ]}
+          ListHeaderComponent={SearchHeader}
+          ListEmptyComponent={EmptyState}
+          showsVerticalScrollIndicator={false}
+        />
+      ) : (
+        // List mode without search - use DraggableFlatList for reordering
+        <DraggableFlatList
+          data={recipes as RecipeItem[]}
+          key="list-draggable"
+          keyExtractor={(item) => item._id}
+          renderItem={renderDraggableItem}
+          onDragEnd={handleDragEnd}
+          contentContainerStyle={[
+            styles.listContent,
+            recipes.length === 0 && styles.emptyListContent,
+          ]}
+          ListHeaderComponent={SearchHeader}
+          ListEmptyComponent={EmptyState}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
+
+      {/* Hint for reordering in list mode */}
+      {viewMode === 'list' && !hasSearchQuery && recipes && recipes.length > 1 && (
+        <View style={styles.reorderHint}>
+          <Text style={styles.reorderHintText}>Long press to reorder</Text>
+        </View>
       )}
     </View>
   );
@@ -195,5 +281,19 @@ const styles = StyleSheet.create({
     color: Colors.textMuted,
     marginTop: Spacing.sm,
     textAlign: 'center',
+  },
+  reorderHint: {
+    position: 'absolute',
+    bottom: Spacing.md,
+    alignSelf: 'center',
+    backgroundColor: Colors.surface,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.xs,
+    borderRadius: 16,
+    opacity: 0.9,
+  },
+  reorderHintText: {
+    fontSize: 12,
+    color: Colors.textMuted,
   },
 });

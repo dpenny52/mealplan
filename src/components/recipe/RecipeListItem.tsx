@@ -12,18 +12,23 @@ export interface RecipeListItemProps {
     imageUrl?: string | null;
   };
   onPress: (id: Id<'recipes'>) => void;
+  onLongPress?: () => void;
+  isActive?: boolean;
 }
 
 /**
  * Compact list view component for recipe list display.
  * Shows small thumbnail with title in a horizontal row.
+ * Supports drag-to-reorder via onLongPress and isActive props.
  */
-export function RecipeListItem({ recipe, onPress }: RecipeListItemProps) {
+export function RecipeListItem({ recipe, onPress, onLongPress, isActive }: RecipeListItemProps) {
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container, isActive && styles.activeContainer]}
       onPress={() => onPress(recipe._id)}
+      onLongPress={onLongPress}
       activeOpacity={0.7}
+      disabled={isActive}
     >
       <View style={styles.thumbnail}>
         {recipe.imageUrl ? (
@@ -49,6 +54,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: Spacing.sm,
     marginBottom: Spacing.sm,
+  },
+  activeContainer: {
+    backgroundColor: Colors.primary + '20',
+    transform: [{ scale: 1.02 }],
   },
   thumbnail: {
     width: THUMBNAIL_SIZE,

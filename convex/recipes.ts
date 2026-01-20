@@ -60,6 +60,30 @@ export const list = query({
 });
 
 /**
+ * List all recipes for a household ordered by sortOrder.
+ * Used for drag-to-reorder feature where custom order matters.
+ * Resolves imageUrl from storage for each recipe.
+ */
+export const listSorted = query({
+  args: { householdId: v.id('households') },
+  handler: async (ctx, args) => {
+    const recipes = await ctx.db
+      .query('recipes')
+      .withIndex('by_household_sort', (q) => q.eq('householdId', args.householdId))
+      .order('asc')
+      .collect();
+
+    // Resolve image URLs
+    return Promise.all(
+      recipes.map(async (recipe) => ({
+        ...recipe,
+        imageUrl: recipe.imageId ? await ctx.storage.getUrl(recipe.imageId) : null,
+      }))
+    );
+  },
+});
+
+/**
  * Get a single recipe by ID.
  * Resolves imageUrl from storage.
  */
