@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Both users can see and edit the same meal plan in real-time, making weekly meal coordination effortless.
-**Current focus:** Phase 2 Recipe Management - Recipe Creation Wizard complete
+**Current focus:** Phase 2 Recipe Management - Recipe Detail Screen complete
 
 ## Current Position
 
 Phase: 2 of 5 (Recipe Management)
-Plan: 3 of 5 in phase 2
+Plan: 4 of 5 in phase 2
 Status: In progress
-Last activity: 2026-01-20 - Completed 02-03-PLAN.md (recipe creation wizard)
+Last activity: 2026-01-20 - Completed 02-04-PLAN.md (recipe detail screen with scaling)
 
-Progress: [=======...] 75% (6/8 plans complete)
+Progress: [========..] 80% (7/8+ plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: ~5 minutes
-- Total execution time: ~30 minutes
+- Total plans completed: 7
+- Average duration: ~4.5 minutes
+- Total execution time: ~33 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3 | ~21 min | ~7 min |
-| 02-recipe-management | 3 | ~9 min | ~3 min |
+| 02-recipe-management | 4 | ~12 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (~15 min), 02-01 (~3 min), 02-02 (~4 min), 02-03 (~2 min)
+- Last 5 plans: 02-01 (~3 min), 02-02 (~4 min), 02-03 (~2 min), 02-04 (~3 min)
 - Trend: Fast execution for UI plans with existing backend
 
 *Updated after each plan completion*
@@ -77,13 +77,18 @@ Recent decisions affecting current work:
 - Local state synced to context on navigation/save
 - router.dismissAll() to close modal after save
 
+**From 02-04:**
+- Round to nearest 1/8 before vulgar fraction conversion (avoids awkward decimals)
+- scaledServings persists to Convex via update mutation
+- Separate component extraction for conditional hook usage (RecipeContent)
+
 ### Pending Todos
 
 None.
 
 ### Blockers/Concerns
 
-None. Recipe creation wizard complete and functional.
+None. Recipe detail screen with scaling complete and functional.
 
 ## Phase Summaries
 
@@ -96,9 +101,10 @@ None. Recipe creation wizard complete and functional.
 1. **02-01 Recipe Backend:** Full schema, CRUD mutations, file upload support
 2. **02-02 Recipe List Screen:** Card/list views, instant search, view mode persistence
 3. **02-03 Recipe Creation Wizard:** Multi-step modal wizard with image upload
+4. **02-04 Recipe Detail Screen:** Serving scaling with vulgar fractions, persistence
 
 ## Session Continuity
 
-Last session: 2026-01-20 18:27 UTC
-Stopped at: Completed 02-03-PLAN.md (recipe creation wizard)
+Last session: 2026-01-20 18:31 UTC
+Stopped at: Completed 02-04-PLAN.md (recipe detail screen with scaling)
 Resume file: None
