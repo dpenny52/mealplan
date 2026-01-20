@@ -103,7 +103,7 @@ export default function DetailsStep() {
       }
 
       // Create the recipe
-      await createRecipe({
+      const recipeId = await createRecipe({
         householdId: HOUSEHOLD_ID,
         title: data.title,
         ingredients: data.ingredients,
@@ -116,8 +116,9 @@ export default function DetailsStep() {
       // Reset wizard state
       resetData();
 
-      // Dismiss modal and go back
+      // Dismiss modal and navigate to the new recipe
       router.dismissAll();
+      router.push(`/recipe/${recipeId}`);
     } catch (error) {
       console.error('Save error:', error);
       Alert.alert('Error', 'Failed to save recipe. Please try again.');
