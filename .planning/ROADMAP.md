@@ -45,12 +45,14 @@ Plans:
   3. User can tap a recipe to see full details (ingredients, instructions, metadata)
   4. User can search recipes by name or filter by ingredient
   5. User can adjust serving size and see ingredient quantities scale proportionally
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md — Install dependencies, update Convex schema, create recipe CRUD mutations
+- [ ] 02-02-PLAN.md — Build recipe list with card/list toggle views and instant search
+- [ ] 02-03-PLAN.md — Create multi-step recipe creation wizard with image upload
+- [ ] 02-04-PLAN.md — Build recipe detail screen with serving scaling and fraction display
+- [ ] 02-05-PLAN.md — Add drag-to-reorder and verify complete feature
 
 ### Phase 3: Meal Planning
 **Goal**: Users can assign recipes to days and view the 4-week rolling calendar
@@ -105,8 +107,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/3 | Planned | - |
-| 2. Recipe Management | 0/3 | Not started | - |
+| 1. Foundation | 2/3 | In Progress | - |
+| 2. Recipe Management | 0/5 | Planned | - |
 | 3. Meal Planning | 0/2 | Not started | - |
 | 4. Grocery Lists | 0/2 | Not started | - |
 | 5. AI Features | 0/2 | Not started | - |
