@@ -30,7 +30,14 @@ export default defineSchema({
 
   groceryItems: defineTable({
     householdId: v.id('households'),
-    name: v.string(),
-    // Additional fields added in Phase 4
-  }).index('by_household', ['householdId']),
+    name: v.string(),           // Display name (e.g., "Flour")
+    quantity: v.optional(v.number()),  // Numeric quantity (optional for "pinch of salt")
+    unit: v.optional(v.string()),      // Unit (e.g., "cups")
+    displayText: v.string(),    // Full display (e.g., "Flour (3 cups)")
+    isChecked: v.boolean(),     // Check-off state
+    isGenerated: v.boolean(),   // true = from meal plan, false = manual
+    weekStart: v.optional(v.string()), // Which week this was generated for (YYYY-MM-DD)
+  })
+    .index('by_household', ['householdId'])
+    .index('by_household_generated', ['householdId', 'isGenerated']),
 });

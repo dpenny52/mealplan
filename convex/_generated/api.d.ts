@@ -10,6 +10,7 @@
 
 import type * as files from "../files.js";
 import type * as households from "../households.js";
+import type * as mealPlans from "../mealPlans.js";
 import type * as recipes from "../recipes.js";
 import type * as testSync from "../testSync.js";
 
@@ -22,6 +23,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   files: typeof files;
   households: typeof households;
+  mealPlans: typeof mealPlans;
   recipes: typeof recipes;
   testSync: typeof testSync;
 }>;
