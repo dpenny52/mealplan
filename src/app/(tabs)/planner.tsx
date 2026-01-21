@@ -1,21 +1,39 @@
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { Colors, Spacing } from '@/constants/theme';
-import { useMealPlanMap } from '@/hooks/useMealPlans';
+import { useMealPlanMap, useSetMeal, useClearMeal } from '@/hooks/useMealPlans';
 import { get4WeekWindow, groupIntoWeeks, THIS_WEEK_INDEX } from '@/utils/dateUtils';
 import { WeekRow, WEEK_ROW_HEIGHT } from '@/components/planner/WeekRow';
+import { RecipePickerModal } from '@/components/planner/RecipePickerModal';
 import type { WeekData, DayData } from '@/utils/dateUtils';
+import type { Id } from '../../../convex/_generated/dataModel';
 
 /**
  * Meal Planner screen showing 4-week calendar.
  * Auto-scrolls to "This week" on mount.
  * Past days are dimmed and non-interactive.
+ *
+ * Day interactions:
+ * - Tap empty day: open recipe picker to assign meal
+ * - Tap assigned day: navigate to recipe detail
+ * - Long-press assigned day: open picker to change/clear meal
  */
 export default function PlannerScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const flatListRef = useRef<FlatList<WeekData>>(null);
   const mealPlanMap = useMealPlanMap();
+
+  // Modal state
+  const [pickerVisible, setPickerVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [editingMealId, setEditingMealId] = useState<string | undefined>();
+
+  // Mutations
+  const setMeal = useSetMeal();
+  const clearMeal = useClearMeal();
 
   // Compute weeks data (memoized for stability)
   const weeks = useMemo(() => {
@@ -36,13 +54,73 @@ export default function PlannerScreen() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Placeholder handlers for day interactions
+  /**
+   * Handle day tap:
+   * - If past day: do nothing (read-only)
+   * - If has meal: navigate to recipe detail
+   * - If empty: open picker to assign meal
+   */
   const handleDayPress = (day: DayData) => {
-    console.log('Day pressed:', day.dateKey);
+    if (day.isPast) return;
+
+    const mealPlan = mealPlanMap?.get(day.dateKey);
+
+    if (mealPlan?.recipeId) {
+      // Navigate to recipe detail
+      router.push(`/recipe/${mealPlan.recipeId}`);
+    } else {
+      // Open picker to assign meal
+      setSelectedDate(day.dateKey);
+      setEditingMealId(undefined);
+      setPickerVisible(true);
+    }
   };
 
+  /**
+   * Handle day long-press:
+   * - If past day: do nothing
+   * - If has meal: open picker in edit mode (can change or clear)
+   * - If empty: open picker (same as tap)
+   */
   const handleDayLongPress = (day: DayData) => {
-    console.log('Day long pressed:', day.dateKey);
+    if (day.isPast) return;
+
+    const mealPlan = mealPlanMap?.get(day.dateKey);
+
+    setSelectedDate(day.dateKey);
+    setEditingMealId(mealPlan?.recipeId);
+    setPickerVisible(true);
+  };
+
+  /**
+   * Handle recipe selection from picker.
+   * Sets meal for the selected date and closes modal.
+   */
+  const handleRecipeSelect = (recipeId: Id<'recipes'>) => {
+    if (selectedDate) {
+      setMeal({ date: selectedDate, recipeId });
+    }
+    handlePickerClose();
+  };
+
+  /**
+   * Handle clear meal action.
+   * Removes meal from the selected date and closes modal.
+   */
+  const handleClearMeal = () => {
+    if (selectedDate) {
+      clearMeal({ date: selectedDate });
+    }
+    handlePickerClose();
+  };
+
+  /**
+   * Close picker and reset modal state.
+   */
+  const handlePickerClose = () => {
+    setPickerVisible(false);
+    setSelectedDate(null);
+    setEditingMealId(undefined);
   };
 
   // getItemLayout for consistent scroll behavior with fixed height rows
@@ -94,6 +172,15 @@ export default function PlannerScreen() {
             });
           }, 100);
         }}
+      />
+
+      <RecipePickerModal
+        visible={pickerVisible}
+        selectedDate={selectedDate}
+        currentRecipeId={editingMealId}
+        onSelect={handleRecipeSelect}
+        onClear={handleClearMeal}
+        onClose={handlePickerClose}
       />
     </View>
   );
