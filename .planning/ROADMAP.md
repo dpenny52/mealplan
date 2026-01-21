@@ -80,11 +80,11 @@ Plans:
   2. Grocery list shows all ingredients needed from assigned recipes
   3. User can check off items while shopping (persists in real-time)
   4. User can export/share the grocery list via native share sheet (text, email, etc.)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md — Extend schema, create ingredient aggregator, and build Convex mutations/queries
+- [ ] 04-02-PLAN.md — Build grocery UI with generation, checkbox, manual items, and share
 
 ### Phase 5: AI Features
 **Goal**: AI-powered recipe extraction and smart ingredient aggregation
@@ -111,9 +111,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Foundation | 3/3 | Complete | 2026-01-20 |
 | 2. Recipe Management | 5/5 | Complete | 2026-01-20 |
 | 3. Meal Planning | 3/3 | Complete | 2026-01-21 |
-| 4. Grocery Lists | 0/2 | Not started | - |
+| 4. Grocery Lists | 0/2 | Ready | - |
 | 5. AI Features | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-01-20*
-*Last updated: 2026-01-20*
+*Last updated: 2026-01-21*
