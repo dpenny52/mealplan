@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-20)
 ## Current Position
 
 Phase: 5 of 5 (AI Features)
-Plan: 3 of 4 in phase 5 (05-01, 05-03 complete)
+Plan: 3 of 4 in phase 5 (05-01, 05-02, 05-03 complete)
 Status: In progress
-Last activity: 2026-01-21 - Completed 05-03-PLAN.md (AI Ingredient Aggregation)
+Last activity: 2026-01-21 - Completed 05-02-PLAN.md (Camera Scan Screen)
 
-Progress: [===============] 100% (16/18 plans complete)
+Progress: [================] 100% (17/18 plans complete)
 
 ## Performance Metrics
 
@@ -31,10 +31,10 @@ Progress: [===============] 100% (16/18 plans complete)
 | 02-recipe-management | 5 | ~19 min | ~4 min |
 | 03-meal-planning | 3 | ~18 min | ~6 min |
 | 04-grocery-lists | 2 | ~18 min | ~9 min |
-| 05-ai-features | 2 | ~8 min | ~4 min |
+| 05-ai-features | 3 | ~12 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (~3 min), 04-02 (~15 min), 05-01 (~5 min), 05-03 (~3 min)
+- Last 5 plans: 04-02 (~15 min), 05-01 (~5 min), 05-03 (~3 min), 05-02 (~4 min)
 - Trend: Backend-only plans faster than UI/verification plans
 
 *Updated after each plan completion*
@@ -123,6 +123,12 @@ Recent decisions affecting current work:
 - AI extraction returns {success, recipe?, error?} pattern
 - Confidence scores 0-1 per field for uncertain text highlighting
 
+**From 05-02:**
+- Camera permission handling with useCameraPermissions hook
+- Promise.race for 15-second extraction timeout
+- Gallery fallback using expo-image-picker
+- Extraction confidence scores passed through wizard context
+
 **From 05-03:**
 - aggregateIngredients as internalAction for cross-module action calls
 - Action orchestration pattern: runQuery -> runAction -> runMutation
@@ -168,10 +174,11 @@ User verified: All 7 must-haves met. Generate from meal plan, check off items, m
 
 ### Phase 5 AI Features (In Progress)
 1. **05-01 Gemini Backend Setup:** Gemini SDK, extractRecipeFromImage action, WizardContext extended
-2. **05-03 AI Ingredient Aggregation:** Semantic ingredient matching with Gemini, intelligent grocery list generation
+2. **05-02 Camera Scan Screen:** expo-camera integration, frame overlay, gallery fallback, 15s timeout
+3. **05-03 AI Ingredient Aggregation:** Semantic ingredient matching with Gemini, intelligent grocery list generation
 
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 05-03-PLAN.md
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
