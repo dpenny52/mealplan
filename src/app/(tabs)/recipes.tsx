@@ -56,6 +56,10 @@ export default function RecipesScreen() {
     router.push('/recipe/create');
   }, [router]);
 
+  const handleScanPress = useCallback(() => {
+    router.push('/recipe/scan');
+  }, [router]);
+
   // Memoized search header to avoid recreating on each render
   // IMPORTANT: Pass as component, not as arrow function, to prevent focus loss
   const SearchHeader = useMemo(
@@ -153,6 +157,9 @@ export default function RecipesScreen() {
               size={24}
               color={Colors.text}
             />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleScanPress} style={styles.headerButton}>
+            <Ionicons name="camera" size={24} color={Colors.primary} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleAddPress} style={styles.headerButton}>
             <Ionicons name="add" size={28} color={Colors.primary} />
