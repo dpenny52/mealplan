@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Both users can see and edit the same meal plan in real-time, making weekly meal coordination effortless.
-**Current focus:** Phase 3 Complete - Ready for Phase 4
+**Current focus:** Phase 4 Grocery Lists - In Progress
 
 ## Current Position
 
-Phase: 3 of 5 (Meal Planning) - COMPLETE
-Plan: 3 of 3 in phase 3 (all complete)
-Status: Phase complete
-Last activity: 2026-01-21 - Completed 03-03-PLAN.md (recipe picker + verification)
+Phase: 4 of 5 (Grocery Lists)
+Plan: 1 of 2 in phase 4 complete
+Status: In progress
+Last activity: 2026-01-21 - Completed 04-01-PLAN.md (grocery list backend)
 
-Progress: [========..] 79% (11/14 plans complete)
+Progress: [=========.] 86% (12/14 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 12
 - Average duration: ~5 minutes
-- Total execution time: ~48 minutes
+- Total execution time: ~51 minutes
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [========..] 79% (11/14 plans complete)
 | 01-foundation | 3 | ~21 min | ~7 min |
 | 02-recipe-management | 5 | ~19 min | ~4 min |
 | 03-meal-planning | 3 | ~18 min | ~6 min |
+| 04-grocery-lists | 1 | ~3 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-05 (~15 min), 03-01 (~3 min), 03-02 (~5 min), 03-03 (~10 min)
-- Trend: Steady execution, checkpoint plans include user verification time
+- Last 5 plans: 03-01 (~3 min), 03-02 (~5 min), 03-03 (~10 min), 04-01 (~3 min)
+- Trend: Steady execution, backend plans are fast
 
 *Updated after each plan completion*
 
@@ -108,9 +109,14 @@ None.
 - Full-screen modal for recipe picker (better touch targets)
 - Remove FlatList initialScrollIndex to allow scrolling past initial position
 
+**From 04-01:**
+- Duplicate ingredient parsing logic in Convex (backend can't import from src/)
+- Round quantities up to nearest 1/4 for shopping convenience
+- isGenerated flag distinguishes generated vs manual items (manual persist on regeneration)
+
 ### Blockers/Concerns
 
-None. Phase 3 meal planning complete and user-approved.
+None. Phase 4 grocery list backend complete.
 
 ## Phase Summaries
 
@@ -135,8 +141,11 @@ User verified: All 5 success criteria met. Recipe creation, list, search, scalin
 
 User verified: All 5 success criteria met. 4-week calendar, Monday-Sunday weeks, recipe assignment, real-time sync.
 
+### Phase 4 Grocery Lists (In Progress)
+1. **04-01 Grocery Backend:** groceryItems schema with check states, 7 Convex functions, ingredient aggregation utilities
+
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed Phase 3 (all plans)
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None
