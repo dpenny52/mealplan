@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Both users can see and edit the same meal plan in real-time, making weekly meal coordination effortless.
-**Current focus:** Phase 4 Complete - Ready for Phase 5
+**Current focus:** Phase 5 - AI Features
 
 ## Current Position
 
-Phase: 4 of 5 (Grocery Lists) - COMPLETE
-Plan: 2 of 2 in phase 4 (all complete)
-Status: Phase complete
-Last activity: 2026-01-21 - Completed 04-02-PLAN.md (grocery UI + verification)
+Phase: 5 of 5 (AI Features)
+Plan: 1 of 4 in phase 5 (05-01 complete)
+Status: In progress
+Last activity: 2026-01-21 - Completed 05-01-PLAN.md (Gemini backend setup)
 
-Progress: [==========] 93% (13/14 plans complete)
+Progress: [==============] 100% (14/14 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
+- Total plans completed: 14
 - Average duration: ~6 minutes
-- Total execution time: ~75 minutes
+- Total execution time: ~80 minutes
 
 **By Phase:**
 
@@ -31,10 +31,11 @@ Progress: [==========] 93% (13/14 plans complete)
 | 02-recipe-management | 5 | ~19 min | ~4 min |
 | 03-meal-planning | 3 | ~18 min | ~6 min |
 | 04-grocery-lists | 2 | ~18 min | ~9 min |
+| 05-ai-features | 1 | ~5 min | ~5 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (~5 min), 03-03 (~10 min), 04-01 (~3 min), 04-02 (~15 min)
-- Trend: Checkpoint plans with user verification take longer due to iteration on feedback
+- Last 5 plans: 03-03 (~10 min), 04-01 (~3 min), 04-02 (~15 min), 05-01 (~5 min)
+- Trend: Backend-only plans faster than UI/verification plans
 
 *Updated after each plan completion*
 
@@ -116,13 +117,19 @@ Recent decisions affecting current work:
 - Singularize ingredient names (beans → bean) for aggregation
 - Manual items aggregate on add (not just display-time grouping)
 
+**From 05-01:**
+- Use Gemini SDK Type enum for JSON schema (zod-to-json-schema incompatible with zod v4)
+- Convex Node actions require "use node" directive on first line
+- AI extraction returns {success, recipe?, error?} pattern
+- Confidence scores 0-1 per field for uncertain text highlighting
+
 ### Pending Todos
 
 None.
 
 ### Blockers/Concerns
 
-None. Phase 4 grocery lists complete and user-approved.
+GEMINI_API_KEY must be added to Convex environment variables before AI extraction can be tested.
 
 ## Phase Summaries
 
@@ -153,8 +160,11 @@ User verified: All 5 success criteria met. 4-week calendar, Monday-Sunday weeks,
 
 User verified: All 7 must-haves met. Generate from meal plan, check off items, manual items aggregate, share via native sheet.
 
+### Phase 5 AI Features (In Progress)
+1. **05-01 Gemini Backend Setup:** Gemini SDK, extractRecipeFromImage action, WizardContext extended
+
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed Phase 4 (all plans)
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None
