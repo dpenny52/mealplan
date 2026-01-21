@@ -18,9 +18,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Meal Planning
 
-- [ ] **PLAN-01**: User can view 4 weeks: two weeks ago, last week, this week, next week
-- [ ] **PLAN-02**: User can assign recipes from collection to any day of the week
-- [ ] **PLAN-03**: Weeks run Monday through Sunday
+- [x] **PLAN-01**: User can view 4 weeks: two weeks ago, last week, this week, next week
+- [x] **PLAN-02**: User can assign recipes from collection to any day of the week
+- [x] **PLAN-03**: Weeks run Monday through Sunday
 
 ### Grocery List
 
@@ -78,9 +78,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RECIPE-04 | Phase 5 | Pending |
 | RECIPE-05 | Phase 2 | Complete |
 | RECIPE-06 | Phase 2 | Complete |
-| PLAN-01 | Phase 3 | Pending |
-| PLAN-02 | Phase 3 | Pending |
-| PLAN-03 | Phase 3 | Pending |
+| PLAN-01 | Phase 3 | Complete |
+| PLAN-02 | Phase 3 | Complete |
+| PLAN-03 | Phase 3 | Complete |
 | GROC-01 | Phase 4 | Pending |
 | GROC-02 | Phase 5 | Pending |
 | GROC-03 | Phase 4 | Pending |

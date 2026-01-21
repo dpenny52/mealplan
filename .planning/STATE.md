@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Both users can see and edit the same meal plan in real-time, making weekly meal coordination effortless.
-**Current focus:** Phase 3 Meal Planning - In Progress
+**Current focus:** Phase 3 Complete - Ready for Phase 4
 
 ## Current Position
 
-Phase: 3 of 5 (Meal Planning)
-Plan: 2 of 3 in phase 3
-Status: In progress
-Last activity: 2026-01-21 - Completed 03-02-PLAN.md (calendar UI)
+Phase: 3 of 5 (Meal Planning) - COMPLETE
+Plan: 3 of 3 in phase 3 (all complete)
+Status: Phase complete
+Last activity: 2026-01-21 - Completed 03-03-PLAN.md (recipe picker + verification)
 
-Progress: [========..] 77% (10/13 plans complete)
+Progress: [========..] 79% (11/14 plans complete)
 
 ## Performance Metrics
 
@@ -29,11 +29,11 @@ Progress: [========..] 77% (10/13 plans complete)
 |-------|-------|-------|----------|
 | 01-foundation | 3 | ~21 min | ~7 min |
 | 02-recipe-management | 5 | ~19 min | ~4 min |
-| 03-meal-planning | 2 | ~8 min | ~4 min |
+| 03-meal-planning | 3 | ~18 min | ~6 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (~2 min), 02-04 (~3 min), 02-05 (~15 min), 03-01 (~3 min), 03-02 (~5 min)
-- Trend: Fast execution, frontend plans slightly longer than backend
+- Last 5 plans: 02-05 (~15 min), 03-01 (~3 min), 03-02 (~5 min), 03-03 (~10 min)
+- Trend: Steady execution, checkpoint plans include user verification time
 
 *Updated after each plan completion*
 
@@ -103,9 +103,14 @@ Recent decisions affecting current work:
 
 None.
 
+**From 03-03:**
+- Long-press for edit mode (iOS/Android pattern)
+- Full-screen modal for recipe picker (better touch targets)
+- Remove FlatList initialScrollIndex to allow scrolling past initial position
+
 ### Blockers/Concerns
 
-None. Calendar UI ready for recipe picker integration.
+None. Phase 3 meal planning complete and user-approved.
 
 ## Phase Summaries
 
@@ -123,12 +128,15 @@ None. Calendar UI ready for recipe picker integration.
 
 User verified: All 5 success criteria met. Recipe creation, list, search, scaling, and reorder all working.
 
-### Phase 3 Meal Planning (In Progress)
+### Phase 3 Meal Planning (Complete)
 1. **03-01 Meal Plan Backend:** mealPlans schema with recipeId, setMeal/clearMeal/listForDateRange functions
 2. **03-02 Calendar UI:** 4-week calendar with date-fns, auto-scroll to today, past days dimmed
+3. **03-03 Recipe Picker:** Modal with search, day interactions (tap/long-press), FlatList scroll fix
+
+User verified: All 5 success criteria met. 4-week calendar, Monday-Sunday weeks, recipe assignment, real-time sync.
 
 ## Session Continuity
 
-Last session: 2026-01-21 04:25 UTC
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-01-21
+Stopped at: Completed Phase 3 (all plans)
 Resume file: None
