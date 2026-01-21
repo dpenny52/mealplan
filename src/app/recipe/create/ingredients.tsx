@@ -80,29 +80,38 @@ export default function IngredientsStep() {
         <Text style={styles.label}>Add your ingredients</Text>
         <Text style={styles.hint}>Enter each ingredient on its own line (e.g., "2 cups flour")</Text>
 
-        {ingredients.map((ingredient, index) => (
-          <View key={index} style={styles.row}>
-            <TextInput
-              style={styles.input}
-              value={ingredient}
-              onChangeText={(value) => handleChange(index, value)}
-              placeholder={`Ingredient ${index + 1}`}
-              placeholderTextColor={Colors.textMuted}
-              returnKeyType="next"
-              onSubmitEditing={() => {
-                if (index === ingredients.length - 1) {
-                  handleAdd();
-                }
-              }}
-            />
-            <TouchableOpacity
-              style={styles.removeButton}
-              onPress={() => handleRemove(index)}
-            >
-              <Ionicons name="close-circle" size={24} color={Colors.textSecondary} />
-            </TouchableOpacity>
-          </View>
-        ))}
+        {ingredients.map((ingredient, index) => {
+          // Check if this ingredient has low confidence from AI extraction
+          const ingredientConfidence = data.extractionConfidence?.ingredients?.[index]?.confidence;
+          const isLowConfidence = ingredientConfidence !== undefined && ingredientConfidence < 0.7;
+
+          return (
+            <View key={index} style={styles.row}>
+              <TextInput
+                style={[styles.input, isLowConfidence && styles.lowConfidenceInput]}
+                value={ingredient}
+                onChangeText={(value) => handleChange(index, value)}
+                placeholder={`Ingredient ${index + 1}`}
+                placeholderTextColor={Colors.textMuted}
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  if (index === ingredients.length - 1) {
+                    handleAdd();
+                  }
+                }}
+              />
+              <TouchableOpacity
+                style={styles.removeButton}
+                onPress={() => handleRemove(index)}
+              >
+                <Ionicons name="close-circle" size={24} color={Colors.textSecondary} />
+              </TouchableOpacity>
+              {isLowConfidence && (
+                <Ionicons name="alert-circle" size={18} color="#FFA500" style={styles.warningIcon} />
+              )}
+            </View>
+          );
+        })}
 
         <TouchableOpacity style={styles.addButton} onPress={handleAdd}>
           <Ionicons name="add-circle-outline" size={24} color={Colors.primary} />
@@ -158,8 +167,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.border,
   },
+  lowConfidenceInput: {
+    borderColor: '#FFA500',
+    borderWidth: 2,
+  },
   removeButton: {
     padding: Spacing.sm,
+    marginLeft: Spacing.xs,
+  },
+  warningIcon: {
     marginLeft: Spacing.xs,
   },
   addButton: {
