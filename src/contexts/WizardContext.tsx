@@ -1,6 +1,16 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
 /**
+ * Per-field extraction confidence data from AI.
+ * Used to highlight uncertain fields in the review UI.
+ */
+export interface ExtractionConfidence {
+  titleConfidence: number;
+  ingredients: Array<{ text: string; confidence: number }>;
+  instructionsConfidence?: number;
+}
+
+/**
  * Data structure for recipe creation wizard.
  * Shared across all wizard steps.
  */
@@ -11,6 +21,8 @@ export interface WizardData {
   prepTime?: number;
   servings?: number;
   imageUri?: string; // Local URI before upload
+  extractionConfidence?: ExtractionConfidence; // AI extraction confidence scores
+  originalPhotoUri?: string; // For "view original" button in review
 }
 
 interface WizardContextType {
@@ -26,6 +38,8 @@ const initialData: WizardData = {
   prepTime: undefined,
   servings: undefined,
   imageUri: undefined,
+  extractionConfidence: undefined,
+  originalPhotoUri: undefined,
 };
 
 const WizardContext = createContext<WizardContextType | undefined>(undefined);
