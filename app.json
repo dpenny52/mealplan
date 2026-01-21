@@ -21,14 +21,37 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#121212"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.dpenny52.mealplan"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      ["expo-router", { "root": "./src/app" }],
-      ["expo-camera", { "cameraPermission": "Allow MealPlan to take photos of recipes for extraction" }]
-    ]
+      [
+        "expo-router",
+        {
+          "root": "./src/app"
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow MealPlan to take photos of recipes for extraction"
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "root": "./src/app"
+      },
+      "eas": {
+        "projectId": "0e0c95f5-2959-466b-afc6-fb1433ca0b50"
+      }
+    }
   }
 }

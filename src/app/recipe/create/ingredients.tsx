@@ -10,6 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing } from '@/constants/theme';
 import { useWizard } from '@/contexts/WizardContext';
@@ -21,6 +22,7 @@ import { useWizard } from '@/contexts/WizardContext';
  */
 export default function IngredientsStep() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { data, updateData } = useWizard();
   // Start with existing ingredients or one empty line
   const [ingredients, setIngredients] = useState<string[]>(
@@ -120,7 +122,11 @@ export default function IngredientsStep() {
       </ScrollView>
 
       <TouchableOpacity
-        style={[styles.button, !canProceed && styles.buttonDisabled]}
+        style={[
+          styles.button,
+          !canProceed && styles.buttonDisabled,
+          { marginBottom: Math.max(insets.bottom, Spacing.md) },
+        ]}
         onPress={handleNext}
         disabled={!canProceed}
       >

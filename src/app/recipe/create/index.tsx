@@ -11,6 +11,7 @@ import {
   Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing } from '@/constants/theme';
 import { useWizard } from '@/contexts/WizardContext';
@@ -21,6 +22,7 @@ import { useWizard } from '@/contexts/WizardContext';
  */
 export default function TitleStep() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { data, updateData } = useWizard();
   const [title, setTitle] = useState(data.title);
   const [showOriginalPhoto, setShowOriginalPhoto] = useState(false);
@@ -111,7 +113,11 @@ export default function TitleStep() {
       </Modal>
 
       <TouchableOpacity
-        style={[styles.button, !canProceed && styles.buttonDisabled]}
+        style={[
+          styles.button,
+          !canProceed && styles.buttonDisabled,
+          { marginBottom: Math.max(insets.bottom, Spacing.lg) },
+        ]}
         onPress={handleNext}
         disabled={!canProceed}
       >

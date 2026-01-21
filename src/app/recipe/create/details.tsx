@@ -11,6 +11,7 @@ import {
   Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useMutation } from 'convex/react';
@@ -26,6 +27,7 @@ import { HOUSEHOLD_ID } from '@/constants/household';
  */
 export default function DetailsStep() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { data, updateData, resetData } = useWizard();
   const [instructions, setInstructions] = useState(data.instructions || '');
   const [prepTime, setPrepTime] = useState(data.prepTime?.toString() || '');
@@ -130,7 +132,7 @@ export default function DetailsStep() {
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={styles.content}
+      contentContainerStyle={[styles.content, { paddingBottom: Math.max(insets.bottom + Spacing.md, Spacing.xl) }]}
       keyboardShouldPersistTaps="handled"
     >
       <Text style={styles.label}>Instructions</Text>
