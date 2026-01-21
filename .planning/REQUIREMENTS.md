@@ -24,10 +24,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Grocery List
 
-- [ ] **GROC-01**: User can generate a grocery list from next week's meal plan
+- [x] **GROC-01**: User can generate a grocery list from next week's meal plan
 - [ ] **GROC-02**: AI aggregates similar ingredients intelligently (e.g., combines "chicken breast" from multiple recipes)
-- [ ] **GROC-03**: User can check off items on the grocery list while shopping
-- [ ] **GROC-04**: User can export/share the grocery list (text, email, share sheet)
+- [x] **GROC-03**: User can check off items on the grocery list while shopping
+- [x] **GROC-04**: User can export/share the grocery list (text, email, share sheet)
 
 ### Infrastructure
 
@@ -81,10 +81,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PLAN-01 | Phase 3 | Complete |
 | PLAN-02 | Phase 3 | Complete |
 | PLAN-03 | Phase 3 | Complete |
-| GROC-01 | Phase 4 | Pending |
+| GROC-01 | Phase 4 | Complete |
 | GROC-02 | Phase 5 | Pending |
-| GROC-03 | Phase 4 | Pending |
-| GROC-04 | Phase 4 | Pending |
+| GROC-03 | Phase 4 | Complete |
+| GROC-04 | Phase 4 | Complete |
 | SYNC-01 | Phase 1 | Complete |
 | SYNC-02 | Phase 1 | Complete |
 | UI-01 | Phase 1 | Complete |
@@ -96,4 +96,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-20 after roadmap creation*
+*Last updated: 2026-01-21 after phase 4 completion*

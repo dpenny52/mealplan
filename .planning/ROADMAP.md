@@ -13,7 +13,7 @@ MealPlan delivers real-time collaborative meal planning for a two-person househo
 - [x] **Phase 1: Foundation** - Expo + Convex setup with navigation, schema, and dark mode
 - [x] **Phase 2: Recipe Management** - CRUD, search, and collection management for recipes
 - [x] **Phase 3: Meal Planning** - 4-week calendar with recipe assignment
-- [ ] **Phase 4: Grocery Lists** - Generation from meal plan, checklist, and export
+- [x] **Phase 4: Grocery Lists** - Generation from meal plan, checklist, and export
 - [ ] **Phase 5: AI Features** - Photo extraction and smart ingredient aggregation
 
 ## Phase Details
@@ -83,8 +83,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Extend schema, create ingredient aggregator, and build Convex mutations/queries
-- [ ] 04-02-PLAN.md — Build grocery UI with generation, checkbox, manual items, and share
+- [x] 04-01-PLAN.md — Extend schema, create ingredient aggregator, and build Convex mutations/queries
+- [x] 04-02-PLAN.md — Build grocery UI with generation, checkbox, manual items, and share
 
 ### Phase 5: AI Features
 **Goal**: AI-powered recipe extraction and smart ingredient aggregation
@@ -111,8 +111,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Foundation | 3/3 | Complete | 2026-01-20 |
 | 2. Recipe Management | 5/5 | Complete | 2026-01-20 |
 | 3. Meal Planning | 3/3 | Complete | 2026-01-21 |
-| 4. Grocery Lists | 0/2 | Ready | - |
-| 5. AI Features | 0/2 | Not started | - |
+| 4. Grocery Lists | 2/2 | Complete | 2026-01-21 |
+| 5. AI Features | 0/2 | Ready | - |
 
 ---
 *Roadmap created: 2026-01-20*

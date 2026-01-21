@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Both users can see and edit the same meal plan in real-time, making weekly meal coordination effortless.
-**Current focus:** Phase 4 Grocery Lists - In Progress
+**Current focus:** Phase 4 Complete - Ready for Phase 5
 
 ## Current Position
 
-Phase: 4 of 5 (Grocery Lists)
-Plan: 1 of 2 in phase 4 complete
-Status: In progress
-Last activity: 2026-01-21 - Completed 04-01-PLAN.md (grocery list backend)
+Phase: 4 of 5 (Grocery Lists) - COMPLETE
+Plan: 2 of 2 in phase 4 (all complete)
+Status: Phase complete
+Last activity: 2026-01-21 - Completed 04-02-PLAN.md (grocery UI + verification)
 
-Progress: [=========.] 86% (12/14 plans complete)
+Progress: [==========] 93% (13/14 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
-- Average duration: ~5 minutes
-- Total execution time: ~51 minutes
+- Total plans completed: 13
+- Average duration: ~6 minutes
+- Total execution time: ~75 minutes
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [=========.] 86% (12/14 plans complete)
 | 01-foundation | 3 | ~21 min | ~7 min |
 | 02-recipe-management | 5 | ~19 min | ~4 min |
 | 03-meal-planning | 3 | ~18 min | ~6 min |
-| 04-grocery-lists | 1 | ~3 min | ~3 min |
+| 04-grocery-lists | 2 | ~18 min | ~9 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (~3 min), 03-02 (~5 min), 03-03 (~10 min), 04-01 (~3 min)
-- Trend: Steady execution, backend plans are fast
+- Last 5 plans: 03-02 (~5 min), 03-03 (~10 min), 04-01 (~3 min), 04-02 (~15 min)
+- Trend: Checkpoint plans with user verification take longer due to iteration on feedback
 
 *Updated after each plan completion*
 
@@ -100,23 +100,29 @@ Recent decisions affecting current work:
 - Fixed WEEK_ROW_HEIGHT=140 for FlatList getItemLayout
 - useMealPlanMap returns Map<dateKey, MealPlan> for O(1) lookup
 
-### Pending Todos
-
-None.
-
 **From 03-03:**
 - Long-press for edit mode (iOS/Android pattern)
 - Full-screen modal for recipe picker (better touch targets)
 - Remove FlatList initialScrollIndex to allow scrolling past initial position
 
 **From 04-01:**
-- Duplicate ingredient parsing logic in Convex (backend can't import from src/)
-- Round quantities up to nearest 1/4 for shopping convenience
-- isGenerated flag distinguishes generated vs manual items (manual persist on regeneration)
+- Convex can't import from src/, inline parsing logic in backend
+- groceryItems indexed by householdId and (householdId, isGenerated)
+- Ingredient aggregation rounds to nearest 1/4 for cleaner display
+
+**From 04-02:**
+- expo-checkbox for native checkbox look
+- Swipeable from react-native-gesture-handler for swipe-to-delete
+- Singularize ingredient names (beans → bean) for aggregation
+- Manual items aggregate on add (not just display-time grouping)
+
+### Pending Todos
+
+None.
 
 ### Blockers/Concerns
 
-None. Phase 4 grocery list backend complete.
+None. Phase 4 grocery lists complete and user-approved.
 
 ## Phase Summaries
 
@@ -141,11 +147,14 @@ User verified: All 5 success criteria met. Recipe creation, list, search, scalin
 
 User verified: All 5 success criteria met. 4-week calendar, Monday-Sunday weeks, recipe assignment, real-time sync.
 
-### Phase 4 Grocery Lists (In Progress)
-1. **04-01 Grocery Backend:** groceryItems schema with check states, 7 Convex functions, ingredient aggregation utilities
+### Phase 4 Grocery Lists (Complete)
+1. **04-01 Grocery Backend:** groceryItems schema, 7 Convex mutations/queries, ingredient aggregation
+2. **04-02 Grocery UI:** Generate button, checkbox items, swipe-to-delete, manual input with aggregation, share
+
+User verified: All 7 must-haves met. Generate from meal plan, check off items, manual items aggregate, share via native sheet.
 
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 04-01-PLAN.md
+Stopped at: Completed Phase 4 (all plans)
 Resume file: None
