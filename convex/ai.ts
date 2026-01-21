@@ -1,5 +1,5 @@
 "use node";
-import { action } from "./_generated/server";
+import { action, internalAction } from "./_generated/server";
 import { v } from "convex/values";
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 
@@ -121,8 +121,9 @@ Be generous with confidence scores for clearly legible text.`,
 /**
  * Aggregate grocery ingredients using AI to identify similar items.
  * Combines semantically similar ingredients (e.g., "chicken breast" + "boneless chicken breast").
+ * Internal action called by groceryLists.generateWithAI.
  */
-export const aggregateIngredients = action({
+export const aggregateIngredients = internalAction({
   args: {
     ingredients: v.array(v.string()),
   },

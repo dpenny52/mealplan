@@ -1,5 +1,6 @@
-import { mutation, query } from './_generated/server';
+import { mutation, query, action, internalMutation, internalQuery } from './_generated/server';
 import { v } from 'convex/values';
+import { internal } from './_generated/api';
 
 /**
  * Grocery list management: generate from meal plans, manual items, check-off.
@@ -487,5 +488,169 @@ export const deleteItem = mutation({
   },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.itemId);
+  },
+});
+
+// ============================================================================
+// AI-Enhanced Grocery Generation
+// ============================================================================
+
+/**
+ * Internal query to get meal plans with their recipe ingredients for a date range.
+ * Used by generateWithAI action.
+ */
+export const _getMealPlansForRange = internalQuery({
+  args: {
+    householdId: v.id('households'),
+    startDate: v.string(),
+    endDate: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const allMealPlans = await ctx.db
+      .query('mealPlans')
+      .withIndex('by_household_date', (q) =>
+        q.eq('householdId', args.householdId)
+      )
+      .collect();
+
+    const mealPlansInRange = allMealPlans.filter(
+      (mp) => mp.date >= args.startDate && mp.date <= args.endDate
+    );
+
+    const result = [];
+    for (const mp of mealPlansInRange) {
+      const recipe = await ctx.db.get(mp.recipeId);
+      result.push({
+        ...mp,
+        ingredients: recipe?.ingredients || [],
+      });
+    }
+
+    return result;
+  },
+});
+
+/**
+ * Internal mutation to save AI-aggregated grocery items.
+ * Used by generateWithAI action after AI processing.
+ */
+export const _saveGeneratedItems = internalMutation({
+  args: {
+    householdId: v.id('households'),
+    weekStart: v.string(),
+    items: v.array(v.object({
+      name: v.string(),
+      quantity: v.optional(v.number()),
+      unit: v.optional(v.string()),
+    })),
+  },
+  handler: async (ctx, args) => {
+    // Delete existing generated items
+    const existingGenerated = await ctx.db
+      .query('groceryItems')
+      .withIndex('by_household_generated', (q) =>
+        q.eq('householdId', args.householdId).eq('isGenerated', true)
+      )
+      .collect();
+
+    for (const item of existingGenerated) {
+      await ctx.db.delete(item._id);
+    }
+
+    // Insert new items
+    for (const item of args.items) {
+      const displayText = formatDisplayText({
+        name: item.name,
+        quantity: item.quantity ?? null,
+        unit: item.unit ?? null,
+      });
+      await ctx.db.insert('groceryItems', {
+        householdId: args.householdId,
+        name: item.name,
+        quantity: item.quantity,
+        unit: item.unit,
+        displayText,
+        isChecked: false,
+        isGenerated: true,
+        weekStart: args.weekStart,
+      });
+    }
+
+    return { count: args.items.length };
+  },
+});
+
+/**
+ * Type for AI aggregation result item.
+ */
+interface AIAggregatedItem {
+  name: string;
+  quantity?: number;
+  unit?: string;
+  originalItems: string[];
+}
+
+/**
+ * Generate grocery list from meal plans using AI-powered ingredient aggregation.
+ * Combines semantically similar ingredients (e.g., "chicken breast" + "boneless chicken breast").
+ * Falls back to throw error if AI fails (caller should catch and use regular generate).
+ */
+export const generateWithAI = action({
+  args: {
+    householdId: v.id('households'),
+    weekStart: v.string(),
+  },
+  returns: v.object({ count: v.number() }),
+  handler: async (ctx, args): Promise<{ count: number }> => {
+    // Calculate week end
+    const startDate = new Date(args.weekStart + 'T00:00:00');
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 6);
+    const weekEnd = endDate.toISOString().split('T')[0];
+
+    // Query meal plans with ingredients
+    const allMealPlans = await ctx.runQuery(internal.groceryLists._getMealPlansForRange, {
+      householdId: args.householdId,
+      startDate: args.weekStart,
+      endDate: weekEnd,
+    });
+
+    // Collect ingredients
+    const allIngredients: string[] = [];
+    for (const mp of allMealPlans) {
+      if (mp.ingredients) {
+        allIngredients.push(...mp.ingredients);
+      }
+    }
+
+    // If no ingredients, save empty list
+    if (allIngredients.length === 0) {
+      await ctx.runMutation(internal.groceryLists._saveGeneratedItems, {
+        householdId: args.householdId,
+        weekStart: args.weekStart,
+        items: [],
+      });
+      return { count: 0 };
+    }
+
+    // Try AI aggregation
+    const aiResult: AIAggregatedItem[] = await ctx.runAction(internal.ai.aggregateIngredients, {
+      ingredients: allIngredients,
+    });
+
+    const items = aiResult.map((item: AIAggregatedItem) => ({
+      name: item.name,
+      quantity: item.quantity ?? undefined,
+      unit: item.unit ?? undefined,
+    }));
+
+    // Save results
+    await ctx.runMutation(internal.groceryLists._saveGeneratedItems, {
+      householdId: args.householdId,
+      weekStart: args.weekStart,
+      items,
+    });
+
+    return { count: items.length };
   },
 });
