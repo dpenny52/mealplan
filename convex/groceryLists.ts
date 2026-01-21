@@ -120,6 +120,49 @@ function normalizeUnit(unit: string): string {
   return UNIT_NORMALIZATION[lower] || lower;
 }
 
+/**
+ * Basic singularization for ingredient names.
+ * Handles common plural patterns to enable aggregation.
+ */
+function singularize(word: string): string {
+  const lower = word.toLowerCase();
+
+  // Common irregular plurals
+  const irregulars: Record<string, string> = {
+    tomatoes: 'tomato',
+    potatoes: 'potato',
+    leaves: 'leaf',
+    loaves: 'loaf',
+    knives: 'knife',
+    halves: 'half',
+  };
+
+  if (irregulars[lower]) {
+    return irregulars[lower];
+  }
+
+  // Words ending in -ies → -y (berries → berry)
+  if (lower.endsWith('ies') && lower.length > 4) {
+    return lower.slice(0, -3) + 'y';
+  }
+
+  // Words ending in -es after s, x, z, ch, sh → remove -es
+  if (lower.endsWith('es') && lower.length > 3) {
+    const stem = lower.slice(0, -2);
+    if (stem.endsWith('s') || stem.endsWith('x') || stem.endsWith('z') ||
+        stem.endsWith('ch') || stem.endsWith('sh')) {
+      return stem;
+    }
+  }
+
+  // Words ending in -s → remove -s (beans → bean)
+  if (lower.endsWith('s') && lower.length > 2 && !lower.endsWith('ss')) {
+    return lower.slice(0, -1);
+  }
+
+  return lower;
+}
+
 function parseIngredientLine(line: string): ParsedIngredient {
   const { quantity, rest } = parseQuantity(line);
   const words = rest.trim().split(/\s+/);
@@ -138,6 +181,9 @@ function parseIngredientLine(line: string): ParsedIngredient {
     name = name.slice(3);
   }
   name = name.trim();
+
+  // Singularize the name to enable aggregation (beans → bean)
+  name = singularize(name);
 
   return { quantity, unit, name };
 }
