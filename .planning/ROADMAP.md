@@ -14,7 +14,7 @@ MealPlan delivers real-time collaborative meal planning for a two-person househo
 - [x] **Phase 2: Recipe Management** - CRUD, search, and collection management for recipes
 - [x] **Phase 3: Meal Planning** - 4-week calendar with recipe assignment
 - [x] **Phase 4: Grocery Lists** - Generation from meal plan, checklist, and export
-- [ ] **Phase 5: AI Features** - Photo extraction and smart ingredient aggregation
+- [x] **Phase 5: AI Features** - Photo extraction and smart ingredient aggregation
 
 ## Phase Details
 
@@ -98,10 +98,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Install Gemini SDK, create extraction action, extend wizard context
-- [ ] 05-02-PLAN.md — Build camera scan screen with frame overlay and extraction flow
-- [ ] 05-03-PLAN.md — Add AI-powered ingredient aggregation to grocery generation
-- [ ] 05-04-PLAN.md — Add entry points, confidence highlighting, and verify complete flow
+- [x] 05-01-PLAN.md — Install Gemini SDK, create extraction action, extend wizard context
+- [x] 05-02-PLAN.md — Build camera scan screen with frame overlay and extraction flow
+- [x] 05-03-PLAN.md — Add AI-powered ingredient aggregation to grocery generation
+- [x] 05-04-PLAN.md — Add entry points, confidence highlighting, and verify complete flow
 
 ## Progress
 
@@ -114,8 +114,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Recipe Management | 5/5 | Complete | 2026-01-20 |
 | 3. Meal Planning | 3/3 | Complete | 2026-01-21 |
 | 4. Grocery Lists | 2/2 | Complete | 2026-01-21 |
-| 5. AI Features | 0/4 | Ready | - |
+| 5. AI Features | 4/4 | Complete | 2026-01-21 |
 
 ---
 *Roadmap created: 2026-01-20*
-*Last updated: 2026-01-21*
+*Last updated: 2026-01-21 - PROJECT COMPLETE*
