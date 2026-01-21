@@ -9,6 +9,7 @@ import {
   useToggleItem,
   useAddManualItem,
   useUncheckAll,
+  useDeleteItem,
   getNextWeekStart,
 } from '@/hooks/useGroceryList';
 import { GroceryHeader } from '@/components/grocery/GroceryHeader';
@@ -29,6 +30,7 @@ export default function GroceryScreen() {
   const toggleItem = useToggleItem();
   const addManualItem = useAddManualItem();
   const uncheckAll = useUncheckAll();
+  const deleteItem = useDeleteItem();
 
   // Compute date range for header
   const dateRange = useMemo(() => {
@@ -80,6 +82,10 @@ export default function GroceryScreen() {
     uncheckAll();
   };
 
+  const handleDelete = (itemId: string) => {
+    deleteItem({ itemId });
+  };
+
   const handleShare = async () => {
     if (!items?.length) return;
 
@@ -121,7 +127,7 @@ export default function GroceryScreen() {
           sections={sections}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <GroceryItem item={item} onToggle={handleToggle} />
+            <GroceryItem item={item} onToggle={handleToggle} onDelete={handleDelete} />
           )}
           renderSectionHeader={({ section: { title } }) => (
             <View style={styles.sectionHeader}>

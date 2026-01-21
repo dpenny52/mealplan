@@ -1,4 +1,7 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { useRef } from 'react';
+import { View, Text, StyleSheet, Pressable, Animated } from 'react-native';
+import { Swipeable } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 import { Colors, Spacing } from '@/constants/theme';
 import type { GroceryItem as GroceryItemType } from '@/hooks/useGroceryList';
@@ -6,37 +9,72 @@ import type { GroceryItem as GroceryItemType } from '@/hooks/useGroceryList';
 interface GroceryItemProps {
   item: GroceryItemType;
   onToggle: (itemId: string) => void;
+  onDelete: (itemId: string) => void;
 }
 
 /**
  * Single grocery item row with checkbox.
  * When checked: strikethrough text, reduced opacity.
+ * Swipe left to reveal delete button.
  */
-export function GroceryItem({ item, onToggle }: GroceryItemProps) {
+export function GroceryItem({ item, onToggle, onDelete }: GroceryItemProps) {
+  const swipeableRef = useRef<Swipeable>(null);
+
   const handleToggle = () => {
     onToggle(item._id);
   };
 
+  const handleDelete = () => {
+    swipeableRef.current?.close();
+    onDelete(item._id);
+  };
+
+  const renderRightActions = (
+    _progress: Animated.AnimatedInterpolation<number>,
+    dragX: Animated.AnimatedInterpolation<number>
+  ) => {
+    const scale = dragX.interpolate({
+      inputRange: [-80, 0],
+      outputRange: [1, 0.5],
+      extrapolate: 'clamp',
+    });
+
+    return (
+      <Pressable style={styles.deleteAction} onPress={handleDelete}>
+        <Animated.View style={{ transform: [{ scale }] }}>
+          <Ionicons name="trash-outline" size={24} color={Colors.text} />
+        </Animated.View>
+      </Pressable>
+    );
+  };
+
   return (
-    <Pressable
-      style={[styles.container, item.isChecked && styles.checked]}
-      onPress={handleToggle}
+    <Swipeable
+      ref={swipeableRef}
+      renderRightActions={renderRightActions}
+      rightThreshold={40}
+      overshootRight={false}
     >
-      <Checkbox
-        value={item.isChecked}
-        onValueChange={handleToggle}
-        color={item.isChecked ? Colors.textMuted : Colors.primary}
-        style={styles.checkbox}
-      />
-      <Text
-        style={[
-          styles.text,
-          item.isChecked && styles.textChecked,
-        ]}
+      <Pressable
+        style={[styles.container, item.isChecked && styles.checked]}
+        onPress={handleToggle}
       >
-        {item.displayText}
-      </Text>
-    </Pressable>
+        <Checkbox
+          value={item.isChecked}
+          onValueChange={handleToggle}
+          color={item.isChecked ? Colors.textMuted : Colors.primary}
+          style={styles.checkbox}
+        />
+        <Text
+          style={[
+            styles.text,
+            item.isChecked && styles.textChecked,
+          ]}
+        >
+          {item.displayText}
+        </Text>
+      </Pressable>
+    </Swipeable>
   );
 }
 
@@ -67,5 +105,11 @@ const styles = StyleSheet.create({
   textChecked: {
     textDecorationLine: 'line-through',
     color: Colors.textMuted,
+  },
+  deleteAction: {
+    backgroundColor: '#dc2626',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
   },
 });
