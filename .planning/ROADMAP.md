@@ -95,11 +95,13 @@ Plans:
   2. App extracts recipe details from the photo via Gemini AI
   3. User can review and edit extracted recipe before saving (mandatory confirmation)
   4. When generating grocery lists, similar ingredients are intelligently combined (e.g., "chicken breast" from multiple recipes becomes one entry with total quantity)
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md — Install Gemini SDK, create extraction action, extend wizard context
+- [ ] 05-02-PLAN.md — Build camera scan screen with frame overlay and extraction flow
+- [ ] 05-03-PLAN.md — Add AI-powered ingredient aggregation to grocery generation
+- [ ] 05-04-PLAN.md — Add entry points, confidence highlighting, and verify complete flow
 
 ## Progress
 
@@ -112,7 +114,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Recipe Management | 5/5 | Complete | 2026-01-20 |
 | 3. Meal Planning | 3/3 | Complete | 2026-01-21 |
 | 4. Grocery Lists | 2/2 | Complete | 2026-01-21 |
-| 5. AI Features | 0/2 | Ready | - |
+| 5. AI Features | 0/4 | Ready | - |
 
 ---
 *Roadmap created: 2026-01-20*
