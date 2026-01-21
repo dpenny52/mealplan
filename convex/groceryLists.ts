@@ -271,6 +271,7 @@ export const generate = mutation({
 /**
  * Add a manual grocery item.
  * Manual items have isGenerated: false and persist across re-generations.
+ * Parses input for quantity/unit and aggregates with existing similar items.
  */
 export const addManualItem = mutation({
   args: {
@@ -278,10 +279,58 @@ export const addManualItem = mutation({
     name: v.string(),
   },
   handler: async (ctx, args) => {
+    // Parse the input to extract quantity, unit, and name
+    const parsed = parseIngredientLine(args.name);
+    const normalizedName = parsed.name.charAt(0).toUpperCase() + parsed.name.slice(1);
+
+    // Check for existing manual item with same name and unit
+    const existingItems = await ctx.db
+      .query('groceryItems')
+      .withIndex('by_household', (q) => q.eq('householdId', args.householdId))
+      .collect();
+
+    const matchingItem = existingItems.find(
+      (item) =>
+        !item.isGenerated &&
+        item.name.toLowerCase() === normalizedName.toLowerCase() &&
+        (item.unit ?? null) === parsed.unit
+    );
+
+    if (matchingItem) {
+      // Aggregate: sum quantities
+      const newQuantity =
+        parsed.quantity !== null || matchingItem.quantity !== undefined
+          ? (matchingItem.quantity ?? 0) + (parsed.quantity ?? 1)
+          : null;
+
+      const aggregatedItem: AggregatedItem = {
+        name: normalizedName,
+        quantity: newQuantity !== null ? roundToNearestQuarter(newQuantity) : null,
+        unit: parsed.unit,
+      };
+
+      await ctx.db.patch(matchingItem._id, {
+        quantity: aggregatedItem.quantity ?? undefined,
+        displayText: formatDisplayText(aggregatedItem),
+        isChecked: false, // Uncheck when adding more
+      });
+
+      return matchingItem._id;
+    }
+
+    // No existing match - insert new item
+    const newItem: AggregatedItem = {
+      name: normalizedName,
+      quantity: parsed.quantity,
+      unit: parsed.unit,
+    };
+
     const itemId = await ctx.db.insert('groceryItems', {
       householdId: args.householdId,
-      name: args.name,
-      displayText: args.name,
+      name: normalizedName,
+      quantity: parsed.quantity ?? undefined,
+      unit: parsed.unit ?? undefined,
+      displayText: formatDisplayText(newItem),
       isChecked: false,
       isGenerated: false,
     });
