@@ -117,3 +117,83 @@ Be generous with confidence scores for clearly legible text.`,
     }
   },
 });
+
+/**
+ * Aggregate grocery ingredients using AI to identify similar items.
+ * Combines semantically similar ingredients (e.g., "chicken breast" + "boneless chicken breast").
+ */
+export const aggregateIngredients = action({
+  args: {
+    ingredients: v.array(v.string()),
+  },
+  returns: v.array(v.object({
+    name: v.string(),
+    quantity: v.optional(v.number()),
+    unit: v.optional(v.string()),
+    originalItems: v.array(v.string()),
+  })),
+  handler: async (ctx, args) => {
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    // If no API key or empty input, return items as-is (will use fallback)
+    if (!apiKey || args.ingredients.length === 0) {
+      return args.ingredients.map(item => ({
+        name: item,
+        quantity: undefined,
+        unit: undefined,
+        originalItems: [item],
+      }));
+    }
+
+    try {
+      const ai = new GoogleGenAI({ apiKey });
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash-lite",
+        contents: `Aggregate these grocery ingredients, combining similar items intelligently.
+
+Input ingredients:
+${args.ingredients.map((item, idx) => `${idx + 1}. ${item}`).join('\n')}
+
+Rules for combining:
+1. Combine obvious semantic matches: "chicken breast" + "boneless chicken breast" = "Chicken breast"
+2. Sum quantities when units are compatible (both in cups, both in lbs, etc.)
+3. Keep items separate if units are incompatible (1 lb vs 2 cups = separate items)
+4. Preserve specific variants when they matter: "unsalted butter" vs "salted butter" = separate
+5. Normalize names to singular, capitalized form: "tomatoes" -> "Tomato"
+
+Return a JSON array where each item has:
+- name: The normalized ingredient name (singular, capitalized)
+- quantity: Total quantity (number) or null if no quantity specified
+- unit: The unit (normalized: cups->cup, pounds->lb, etc.) or null
+- originalItems: Array of the original input strings that were combined
+
+Example:
+Input: ["2 cups flour", "1 cup all-purpose flour", "3 chicken breasts", "boneless chicken breast"]
+Output: [
+  {"name": "Flour", "quantity": 3, "unit": "cup", "originalItems": ["2 cups flour", "1 cup all-purpose flour"]},
+  {"name": "Chicken breast", "quantity": 4, "unit": null, "originalItems": ["3 chicken breasts", "boneless chicken breast"]}
+]`,
+        config: {
+          responseMimeType: "application/json",
+        },
+      });
+
+      const text = response.text;
+      if (!text) {
+        throw new Error("Empty AI response");
+      }
+
+      return JSON.parse(text);
+    } catch (error) {
+      console.error("AI aggregation error:", error);
+      // Return original items for fallback processing
+      return args.ingredients.map(item => ({
+        name: item,
+        quantity: undefined,
+        unit: undefined,
+        originalItems: [item],
+      }));
+    }
+  },
+});
