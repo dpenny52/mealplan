@@ -6,6 +6,7 @@ import { Colors, Spacing } from '@/constants/theme';
 import {
   useGroceryList,
   useGenerateGroceryList,
+  useGenerateGroceryListWithAI,
   useToggleItem,
   useAddManualItem,
   useUncheckAll,
@@ -26,7 +27,8 @@ export default function GroceryScreen() {
 
   // Data hooks
   const items = useGroceryList();
-  const generateList = useGenerateGroceryList();
+  const generateWithAI = useGenerateGroceryListWithAI();
+  const generateFallback = useGenerateGroceryList();
   const toggleItem = useToggleItem();
   const addManualItem = useAddManualItem();
   const uncheckAll = useUncheckAll();
@@ -64,7 +66,13 @@ export default function GroceryScreen() {
     setIsGenerating(true);
     try {
       const weekStart = getNextWeekStart();
-      await generateList({ weekStart });
+      // Try AI-enhanced generation first
+      await generateWithAI({ weekStart });
+    } catch (error) {
+      console.log("AI generation failed, using fallback:", error);
+      // Fallback to non-AI generation
+      const weekStart = getNextWeekStart();
+      await generateFallback({ weekStart });
     } finally {
       setIsGenerating(false);
     }

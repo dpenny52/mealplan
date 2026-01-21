@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useQuery, useMutation } from 'convex/react';
+import { useQuery, useMutation, useAction } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { HOUSEHOLD_ID } from '@/constants/household';
 import { startOfWeek, addWeeks, format } from 'date-fns';
@@ -42,6 +42,22 @@ export function useGenerateGroceryList() {
       ({ weekStart }: { weekStart: string }) =>
         mutation({ householdId: HOUSEHOLD_ID, weekStart }),
     [mutation]
+  );
+}
+
+/**
+ * Hook that returns action function to generate grocery list using AI aggregation.
+ * Falls back to regular generation if AI fails.
+ * Usage: const generateAI = useGenerateGroceryListWithAI(); await generateAI({ weekStart });
+ */
+export function useGenerateGroceryListWithAI() {
+  const aiAction = useAction(api.groceryLists.generateWithAI);
+
+  return useMemo(
+    () =>
+      ({ weekStart }: { weekStart: string }) =>
+        aiAction({ householdId: HOUSEHOLD_ID, weekStart }),
+    [aiAction]
   );
 }
 
