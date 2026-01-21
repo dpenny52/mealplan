@@ -6,8 +6,9 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
-import { useLocalSearchParams, Stack } from 'expo-router';
+import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { Id } from '../../../convex/_generated/dataModel';
@@ -16,6 +17,7 @@ import { ServingStepper } from '@/components/recipe/ServingStepper';
 import { IngredientList } from '@/components/recipe/IngredientList';
 import { useServingScale } from '@/hooks/useServingScale';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /**
  * Recipe detail screen showing full recipe information.
@@ -29,6 +31,8 @@ import { Ionicons } from '@expo/vector-icons';
  */
 export default function RecipeDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   // Fetch recipe data
   const recipe = useQuery(api.recipes.get, {
@@ -58,6 +62,12 @@ export default function RecipeDetailScreen() {
     <>
       <Stack.Screen options={{ title: recipe.title }} />
       <RecipeContent recipe={recipe} />
+      <TouchableOpacity
+        style={[styles.fab, { bottom: Math.max(insets.bottom, Spacing.md) + Spacing.md }]}
+        onPress={() => router.push(`/recipe/edit/${id}`)}
+      >
+        <Ionicons name="pencil" size={24} color={Colors.background} />
+      </TouchableOpacity>
     </>
   );
 }
@@ -256,5 +266,20 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: Spacing.xl,
+  },
+  fab: {
+    position: 'absolute',
+    right: Spacing.md,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: Colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
 });

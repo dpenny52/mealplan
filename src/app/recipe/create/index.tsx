@@ -10,7 +10,7 @@ import {
   Modal,
   Image,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, Stack } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing } from '@/constants/theme';
@@ -55,6 +55,18 @@ export default function TitleStep() {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      <Stack.Screen
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => router.dismiss()}
+              style={styles.headerBackButton}
+            >
+              <Ionicons name="close" size={24} color={Colors.text} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <View style={styles.content}>
         <Text style={styles.label}>What's the recipe called?</Text>
         <TextInput
@@ -132,6 +144,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
     padding: Spacing.md,
+  },
+  headerBackButton: {
+    padding: Spacing.xs,
+    marginLeft: -Spacing.xs,
   },
   content: {
     flex: 1,

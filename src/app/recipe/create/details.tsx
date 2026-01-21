@@ -9,6 +9,9 @@ import {
   Image,
   ActivityIndicator,
   Alert,
+  ActionSheetIOS,
+  Platform,
+  Modal,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -34,12 +37,54 @@ export default function DetailsStep() {
   const [servings, setServings] = useState(data.servings?.toString() || '');
   const [imageUri, setImageUri] = useState(data.imageUri || '');
   const [saving, setSaving] = useState(false);
+  const [showImagePicker, setShowImagePicker] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
 
   const createRecipe = useMutation(api.recipes.create);
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
 
-  const pickImage = async () => {
-    // Request permission
+  const handleImagePress = () => {
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['Cancel', 'Take Photo', 'Choose from Library'],
+          cancelButtonIndex: 0,
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 1) {
+            takePhoto();
+          } else if (buttonIndex === 2) {
+            pickFromLibrary();
+          }
+        }
+      );
+    } else {
+      setShowImagePicker(true);
+    }
+  };
+
+  const takePhoto = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission Required', 'Please allow camera access to take a photo.');
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      const uri = result.assets[0].uri;
+      setImageLoading(true);
+      setImageUri(uri);
+      updateData({ imageUri: uri });
+    }
+  };
+
+  const pickFromLibrary = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       Alert.alert('Permission Required', 'Please allow access to your photos to add a recipe image.');
@@ -54,8 +99,10 @@ export default function DetailsStep() {
     });
 
     if (!result.canceled && result.assets[0]) {
-      setImageUri(result.assets[0].uri);
-      updateData({ imageUri: result.assets[0].uri });
+      const uri = result.assets[0].uri;
+      setImageLoading(true);
+      setImageUri(uri);
+      updateData({ imageUri: uri });
     }
   };
 
@@ -175,19 +222,77 @@ export default function DetailsStep() {
 
       <Text style={styles.label}>Photo</Text>
       {imageUri ? (
-        <TouchableOpacity onPress={pickImage} style={styles.imageContainer}>
-          <Image source={{ uri: imageUri }} style={styles.image} />
-          <View style={styles.changeImageOverlay}>
+        <View style={styles.imageContainer}>
+          <Image
+            key={imageUri}
+            source={{ uri: imageUri }}
+            style={styles.image}
+            resizeMode="cover"
+            onLoad={() => setImageLoading(false)}
+            onError={() => setImageLoading(false)}
+          />
+          {imageLoading && (
+            <View style={styles.imageLoadingOverlay}>
+              <ActivityIndicator size="large" color={Colors.primary} />
+              <Text style={styles.imageLoadingText}>Loading preview...</Text>
+            </View>
+          )}
+          <TouchableOpacity onPress={handleImagePress} style={styles.changeImageOverlay}>
             <Ionicons name="camera" size={24} color={Colors.text} />
             <Text style={styles.changeImageText}>Tap to change</Text>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
       ) : (
-        <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+        <TouchableOpacity style={styles.imagePicker} onPress={handleImagePress}>
           <Ionicons name="camera-outline" size={48} color={Colors.textSecondary} />
           <Text style={styles.imagePickerText}>Add a photo</Text>
         </TouchableOpacity>
       )}
+
+      {/* Android image picker modal */}
+      <Modal
+        visible={showImagePicker}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowImagePicker(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowImagePicker(false)}
+        >
+          <View style={styles.pickerModal}>
+            <TouchableOpacity
+              style={styles.pickerOption}
+              onPress={() => {
+                setShowImagePicker(false);
+                takePhoto();
+              }}
+            >
+              <Ionicons name="camera" size={24} color={Colors.text} />
+              <Text style={styles.pickerOptionText}>Take Photo</Text>
+            </TouchableOpacity>
+            <View style={styles.pickerDivider} />
+            <TouchableOpacity
+              style={styles.pickerOption}
+              onPress={() => {
+                setShowImagePicker(false);
+                pickFromLibrary();
+              }}
+            >
+              <Ionicons name="images" size={24} color={Colors.text} />
+              <Text style={styles.pickerOptionText}>Choose from Library</Text>
+            </TouchableOpacity>
+            <View style={styles.pickerDivider} />
+            <TouchableOpacity
+              style={styles.pickerOption}
+              onPress={() => setShowImagePicker(false)}
+            >
+              <Text style={[styles.pickerOptionText, { color: Colors.textMuted }]}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
 
       <TouchableOpacity
         style={[styles.saveButton, saving && styles.buttonDisabled]}
@@ -259,11 +364,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     borderRadius: 8,
     overflow: 'hidden',
+    height: 200,
+    backgroundColor: Colors.surface,
   },
   image: {
     width: '100%',
     height: 200,
-    borderRadius: 8,
   },
   changeImageOverlay: {
     position: 'absolute',
@@ -276,6 +382,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: Spacing.sm,
     gap: Spacing.sm,
+  },
+  imageLoadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: Colors.surface,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
+  imageLoadingText: {
+    color: Colors.textSecondary,
+    fontSize: 14,
   },
   changeImageText: {
     color: Colors.text,
@@ -295,5 +412,30 @@ const styles = StyleSheet.create({
     color: Colors.background,
     fontSize: 18,
     fontWeight: '600',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  pickerModal: {
+    backgroundColor: Colors.surface,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    paddingBottom: Spacing.xl,
+  },
+  pickerOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: Spacing.md,
+    gap: Spacing.md,
+  },
+  pickerOptionText: {
+    fontSize: 16,
+    color: Colors.text,
+  },
+  pickerDivider: {
+    height: 1,
+    backgroundColor: Colors.border,
   },
 });

@@ -185,7 +185,20 @@ Output: [
         throw new Error("Empty AI response");
       }
 
-      return JSON.parse(text);
+      // Parse and transform null values to undefined (Convex v.optional() doesn't accept null)
+      const parsed = JSON.parse(text) as Array<{
+        name: string;
+        quantity: number | null;
+        unit: string | null;
+        originalItems: string[];
+      }>;
+
+      return parsed.map(item => ({
+        name: item.name,
+        quantity: item.quantity ?? undefined,
+        unit: item.unit ?? undefined,
+        originalItems: item.originalItems,
+      }));
     } catch (error) {
       console.error("AI aggregation error:", error);
       // Return original items for fallback processing

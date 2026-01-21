@@ -130,13 +130,14 @@ export default function ScanRecipeScreen() {
         quality: 0.8,
       });
 
-      if (result.canceled || !result.assets?.[0]?.base64) {
+      const base64 = result.assets?.[0]?.base64;
+      if (result.canceled || !base64) {
         return; // User cancelled
       }
 
       const asset = result.assets[0];
       const mimeType = asset.uri.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
-      await processImage(asset.base64, mimeType, asset.uri);
+      await processImage(base64, mimeType, asset.uri);
     } catch (err) {
       console.error('Gallery picker error:', err);
       setError('Failed to load image. Please try again.');

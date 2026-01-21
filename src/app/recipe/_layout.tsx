@@ -44,6 +44,12 @@ export default function RecipeLayout() {
             presentation: 'modal',
           }}
         />
+        <Stack.Screen
+          name="edit/[id]"
+          options={{
+            presentation: 'modal',
+          }}
+        />
       </Stack>
     </WizardProvider>
   );
