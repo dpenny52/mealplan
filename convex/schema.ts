@@ -25,7 +25,7 @@ export default defineSchema({
   mealPlans: defineTable({
     householdId: v.id('households'),
     date: v.string(), // ISO date string (YYYY-MM-DD)
-    // Additional fields added in Phase 3
+    recipeId: v.id('recipes'), // Recipe assigned to this day
   }).index('by_household_date', ['householdId', 'date']),
 
   groceryItems: defineTable({
