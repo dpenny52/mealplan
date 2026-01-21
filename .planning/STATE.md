@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-20)
 ## Current Position
 
 Phase: 3 of 5 (Meal Planning)
-Plan: 1 of 3 in phase 3
+Plan: 2 of 3 in phase 3
 Status: In progress
-Last activity: 2026-01-20 - Completed 03-01-PLAN.md (meal plan backend)
+Last activity: 2026-01-21 - Completed 03-02-PLAN.md (calendar UI)
 
-Progress: [=======...] 69% (9/13 plans complete)
+Progress: [========..] 77% (10/13 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
+- Total plans completed: 10
 - Average duration: ~5 minutes
-- Total execution time: ~43 minutes
+- Total execution time: ~48 minutes
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [=======...] 69% (9/13 plans complete)
 |-------|-------|-------|----------|
 | 01-foundation | 3 | ~21 min | ~7 min |
 | 02-recipe-management | 5 | ~19 min | ~4 min |
-| 03-meal-planning | 1 | ~3 min | ~3 min |
+| 03-meal-planning | 2 | ~8 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (~4 min), 02-03 (~2 min), 02-04 (~3 min), 02-05 (~15 min), 03-01 (~3 min)
-- Trend: Fast execution, backend plans consistently under 5 min
+- Last 5 plans: 02-03 (~2 min), 02-04 (~3 min), 02-05 (~15 min), 03-01 (~3 min), 03-02 (~5 min)
+- Trend: Fast execution, frontend plans slightly longer than backend
 
 *Updated after each plan completion*
 
@@ -93,13 +93,19 @@ Recent decisions affecting current work:
 - Date range filtering in handler after index query (compound range limitations)
 - Recipe lastUsed auto-updates on meal assignment (keeps recent recipes at top)
 
+**From 03-02:**
+- date-fns for date manipulation (tree-shakeable, functional API)
+- Monday week start (weekStartsOn: 1) per PLAN-03 requirement
+- Fixed WEEK_ROW_HEIGHT=140 for FlatList getItemLayout
+- useMealPlanMap returns Map<dateKey, MealPlan> for O(1) lookup
+
 ### Pending Todos
 
 None.
 
 ### Blockers/Concerns
 
-None. Meal plan backend ready for calendar UI.
+None. Calendar UI ready for recipe picker integration.
 
 ## Phase Summaries
 
@@ -119,9 +125,10 @@ User verified: All 5 success criteria met. Recipe creation, list, search, scalin
 
 ### Phase 3 Meal Planning (In Progress)
 1. **03-01 Meal Plan Backend:** mealPlans schema with recipeId, setMeal/clearMeal/listForDateRange functions
+2. **03-02 Calendar UI:** 4-week calendar with date-fns, auto-scroll to today, past days dimmed
 
 ## Session Continuity
 
-Last session: 2026-01-20 23:18 UTC
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-01-21 04:25 UTC
+Stopped at: Completed 03-02-PLAN.md
 Resume file: None
