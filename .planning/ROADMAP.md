@@ -67,7 +67,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Update Convex schema and create meal plan mutations/queries
+- [x] 03-01-PLAN.md — Update Convex schema and create meal plan mutations/queries
 - [ ] 03-02-PLAN.md — Create date utilities, hooks, and 4-week calendar UI
 - [ ] 03-03-PLAN.md — Add recipe picker modal and wire up day interactions
 
@@ -110,7 +110,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-01-20 |
 | 2. Recipe Management | 5/5 | Complete | 2026-01-20 |
-| 3. Meal Planning | 0/3 | Not started | - |
+| 3. Meal Planning | 1/3 | In progress | - |
 | 4. Grocery Lists | 0/2 | Not started | - |
 | 5. AI Features | 0/2 | Not started | - |
 

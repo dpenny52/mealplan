@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-20)
 
 **Core value:** Both users can see and edit the same meal plan in real-time, making weekly meal coordination effortless.
-**Current focus:** Phase 2 Complete - Ready for Phase 3
+**Current focus:** Phase 3 Meal Planning - In Progress
 
 ## Current Position
 
-Phase: 2 of 5 (Recipe Management) - COMPLETE
-Plan: 5 of 5 in phase 2 (all complete)
-Status: Phase complete
-Last activity: 2026-01-20 - Completed 02-05-PLAN.md (drag reorder + verification)
+Phase: 3 of 5 (Meal Planning)
+Plan: 1 of 3 in phase 3
+Status: In progress
+Last activity: 2026-01-20 - Completed 03-01-PLAN.md (meal plan backend)
 
-Progress: [======....] 62% (8/13 plans complete)
+Progress: [=======...] 69% (9/13 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 9
 - Average duration: ~5 minutes
-- Total execution time: ~40 minutes
+- Total execution time: ~43 minutes
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [======....] 62% (8/13 plans complete)
 |-------|-------|-------|----------|
 | 01-foundation | 3 | ~21 min | ~7 min |
 | 02-recipe-management | 5 | ~19 min | ~4 min |
+| 03-meal-planning | 1 | ~3 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (~3 min), 02-02 (~4 min), 02-03 (~2 min), 02-04 (~3 min), 02-05 (~15 min)
-- Trend: Fast execution, 02-05 included user checkpoint
+- Last 5 plans: 02-02 (~4 min), 02-03 (~2 min), 02-04 (~3 min), 02-05 (~15 min), 03-01 (~3 min)
+- Trend: Fast execution, backend plans consistently under 5 min
 
 *Updated after each plan completion*
 
@@ -87,13 +88,18 @@ Recent decisions affecting current work:
 - GestureHandlerRootView must wrap app for drag gestures
 - Navigate to recipe detail after creation (better UX than returning to list)
 
+**From 03-01:**
+- Upsert pattern: query then patch/insert (Convex has no native upsert)
+- Date range filtering in handler after index query (compound range limitations)
+- Recipe lastUsed auto-updates on meal assignment (keeps recent recipes at top)
+
 ### Pending Todos
 
 None.
 
 ### Blockers/Concerns
 
-None. Phase 2 recipe management complete and user-approved.
+None. Meal plan backend ready for calendar UI.
 
 ## Phase Summaries
 
@@ -111,8 +117,11 @@ None. Phase 2 recipe management complete and user-approved.
 
 User verified: All 5 success criteria met. Recipe creation, list, search, scaling, and reorder all working.
 
+### Phase 3 Meal Planning (In Progress)
+1. **03-01 Meal Plan Backend:** mealPlans schema with recipeId, setMeal/clearMeal/listForDateRange functions
+
 ## Session Continuity
 
-Last session: 2026-01-20 19:45 UTC
-Stopped at: Completed Phase 2 (all plans)
+Last session: 2026-01-20 23:18 UTC
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None
