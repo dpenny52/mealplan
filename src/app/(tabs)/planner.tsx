@@ -160,7 +160,6 @@ export default function PlannerScreen() {
         renderItem={renderWeek}
         keyExtractor={(week) => week.weekIndex.toString()}
         getItemLayout={getItemLayout}
-        initialScrollIndex={THIS_WEEK_INDEX}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         onScrollToIndexFailed={(info) => {
