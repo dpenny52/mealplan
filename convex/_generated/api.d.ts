@@ -9,6 +9,7 @@
  */
 
 import type * as files from "../files.js";
+import type * as groceryLists from "../groceryLists.js";
 import type * as households from "../households.js";
 import type * as mealPlans from "../mealPlans.js";
 import type * as recipes from "../recipes.js";
@@ -22,6 +23,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   files: typeof files;
+  groceryLists: typeof groceryLists;
   households: typeof households;
   mealPlans: typeof mealPlans;
   recipes: typeof recipes;
