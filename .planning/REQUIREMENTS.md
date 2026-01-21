@@ -12,7 +12,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **RECIPE-01**: User can add recipes manually with title, ingredients, instructions, and metadata (prep time, servings, etc.)
 - [x] **RECIPE-02**: User can view their collection of saved recipes
 - [x] **RECIPE-03**: User can search and filter recipes by name or ingredient
-- [ ] **RECIPE-04**: User can take a photo of a recipe and have it extracted via Gemini AI
+- [x] **RECIPE-04**: User can take a photo of a recipe and have it extracted via Gemini AI
 - [x] **RECIPE-05**: User can adjust recipe portions (scales ingredient quantities)
 - [x] **RECIPE-06**: User can reorder recipes in the collection (custom sort order)
 
@@ -25,7 +25,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Grocery List
 
 - [x] **GROC-01**: User can generate a grocery list from next week's meal plan
-- [ ] **GROC-02**: AI aggregates similar ingredients intelligently (e.g., combines "chicken breast" from multiple recipes)
+- [x] **GROC-02**: AI aggregates similar ingredients intelligently (e.g., combines "chicken breast" from multiple recipes)
 - [x] **GROC-03**: User can check off items on the grocery list while shopping
 - [x] **GROC-04**: User can export/share the grocery list (text, email, share sheet)
 
@@ -75,14 +75,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RECIPE-01 | Phase 2 | Complete |
 | RECIPE-02 | Phase 2 | Complete |
 | RECIPE-03 | Phase 2 | Complete |
-| RECIPE-04 | Phase 5 | Pending |
+| RECIPE-04 | Phase 5 | Complete |
 | RECIPE-05 | Phase 2 | Complete |
 | RECIPE-06 | Phase 2 | Complete |
 | PLAN-01 | Phase 3 | Complete |
 | PLAN-02 | Phase 3 | Complete |
 | PLAN-03 | Phase 3 | Complete |
 | GROC-01 | Phase 4 | Complete |
-| GROC-02 | Phase 5 | Pending |
+| GROC-02 | Phase 5 | Complete |
 | GROC-03 | Phase 4 | Complete |
 | GROC-04 | Phase 4 | Complete |
 | SYNC-01 | Phase 1 | Complete |
@@ -96,4 +96,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-20*
-*Last updated: 2026-01-21 after phase 4 completion*
+*Last updated: 2026-01-21 - All v1 requirements complete*
