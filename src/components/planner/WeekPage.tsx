@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Colors, Spacing } from '@/constants/theme';
-import { DayCard } from './DayCard';
+import { DayCard, CARD_HEIGHT } from './DayCard';
 import { formatWeekRangeShort, getExtendedWeekLabel } from '@/utils/dateUtils';
 import type { WeekData, DayData } from '@/utils/dateUtils';
 import type { MealPlanWithRecipe } from '@/hooks/useMealPlans';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const CARD_GAP = Spacing.sm;
 
 interface WeekPageProps {
   week: WeekData;
@@ -74,8 +75,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: Spacing.sm,
-    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.xs,
+    paddingVertical: Spacing.sm,
   },
   weekLabel: {
     fontSize: 14,
@@ -90,14 +91,14 @@ const styles = StyleSheet.create({
   },
   grid: {
     flex: 1,
-    gap: Spacing.xs,
+    gap: CARD_GAP,
   },
   row: {
     flexDirection: 'row',
-    flex: 1,
+    height: CARD_HEIGHT,
+    gap: CARD_GAP,
   },
   emptySpacer: {
     flex: 1,
-    margin: Spacing.xs,
   },
 });

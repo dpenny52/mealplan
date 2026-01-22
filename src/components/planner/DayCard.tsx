@@ -4,6 +4,9 @@ import { Colors, Spacing } from '@/constants/theme';
 import type { DayData } from '@/utils/dateUtils';
 import type { MealPlanWithRecipe } from '@/hooks/useMealPlans';
 
+/** Fixed height for day cards */
+export const CARD_HEIGHT = 120;
+
 interface DayCardProps {
   day: DayData;
   mealPlan?: MealPlanWithRecipe;
@@ -81,10 +84,10 @@ export function DayCard({ day, mealPlan, onPress, onLongPress }: DayCardProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: CARD_HEIGHT,
     backgroundColor: Colors.surface,
     borderRadius: 12,
     padding: Spacing.md,
-    margin: Spacing.xs,
     justifyContent: 'space-between',
   },
   todayContainer: {
