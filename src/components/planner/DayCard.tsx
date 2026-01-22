@@ -81,7 +81,6 @@ export function DayCard({ day, mealPlan, onPress, onLongPress }: DayCardProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    aspectRatio: 1,
     backgroundColor: Colors.surface,
     borderRadius: 12,
     padding: Spacing.md,

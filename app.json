@@ -14,7 +14,8 @@
       "backgroundColor": "#121212"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dpenny52.mealplan"
     },
     "android": {
       "adaptiveIcon": {
