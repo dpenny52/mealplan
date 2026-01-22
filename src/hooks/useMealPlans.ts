@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { HOUSEHOLD_ID } from '@/constants/household';
-import { get4WeekWindow, formatDateKey } from '@/utils/dateUtils';
+import { getExtendedDateRange, formatDateKey } from '@/utils/dateUtils';
+import { subDays } from 'date-fns';
 
 /**
  * Type for a meal plan entry with resolved recipe data.
@@ -13,17 +14,17 @@ export type MealPlanWithRecipe = NonNullable<
 >[number];
 
 /**
- * Hook to fetch meal plans for the 4-week window.
- * Computes stable start/end dates using useMemo.
- * Returns undefined while loading, then meal plan array.
+ * Hook to fetch meal plans for the extended date range.
+ * Includes 2 weeks before "2 weeks ago" for Past History section (total 7 weeks back).
  */
 export function useMealPlans() {
-  // Compute stable date range for the query
   const { startDate, endDate } = useMemo(() => {
-    const days = get4WeekWindow();
+    const { startDate: rangeStart, endDate: rangeEnd } = getExtendedDateRange();
+    // Extend start date back 14 more days for Past History
+    const extendedStart = subDays(new Date(rangeStart), 14);
     return {
-      startDate: formatDateKey(days[0]),
-      endDate: formatDateKey(days[days.length - 1]),
+      startDate: formatDateKey(extendedStart),
+      endDate: rangeEnd,
     };
   }, []);
 
