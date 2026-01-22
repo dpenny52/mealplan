@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 import { format } from 'date-fns';
 import { Colors, Spacing } from '@/constants/theme';
 import type { DayData } from '@/utils/dateUtils';
 import type { MealPlanWithRecipe } from '@/hooks/useMealPlans';
 
 /** Fixed height for day cards */
-export const CARD_HEIGHT = 120;
+export const CARD_HEIGHT = 140;
 
 interface DayCardProps {
   day: DayData;
@@ -15,8 +15,8 @@ interface DayCardProps {
 }
 
 /**
- * Large day card for 2-column grid layout.
- * Shows day name, date number, meal title, and "Today" label.
+ * Day card for 2-column grid layout.
+ * Shows day name, date number, recipe image (center), and title (bottom).
  * Green border highlight for current day.
  */
 export function DayCard({ day, mealPlan, onPress, onLongPress }: DayCardProps) {
@@ -35,6 +35,8 @@ export function DayCard({ day, mealPlan, onPress, onLongPress }: DayCardProps) {
       onLongPress(day);
     }
   };
+
+  const recipe = mealPlan?.recipe;
 
   return (
     <Pressable
@@ -57,26 +59,28 @@ export function DayCard({ day, mealPlan, onPress, onLongPress }: DayCardProps) {
         </Text>
       </View>
 
-      {/* Content area: Meal title or empty state */}
-      <View style={styles.content}>
-        {mealPlan?.recipe ? (
-          <Text
-            style={[styles.mealTitle, isToday && styles.todayText, isPast && styles.pastText]}
-            numberOfLines={2}
-          >
-            {mealPlan.recipe.title}
-          </Text>
-        ) : !isPast ? (
-          <View style={styles.emptyState}>
-            <Text style={styles.addButton}>+</Text>
-          </View>
+      {/* Middle: Recipe image or empty state */}
+      <View style={styles.middle}>
+        {recipe?.imageUrl ? (
+          <Image source={{ uri: recipe.imageUrl }} style={styles.recipeImage} />
+        ) : !isPast && !recipe ? (
+          <Text style={styles.addButton}>+</Text>
         ) : null}
       </View>
 
-      {/* Today label at bottom */}
-      {isToday && (
-        <Text style={styles.todayLabel}>Today</Text>
-      )}
+      {/* Bottom: Recipe title or Today label */}
+      <View style={styles.bottom}>
+        {recipe ? (
+          <Text
+            style={[styles.recipeTitle, isToday && styles.todayText, isPast && styles.pastText]}
+            numberOfLines={1}
+          >
+            {recipe.title}
+          </Text>
+        ) : isToday ? (
+          <Text style={styles.todayLabel}>Today</Text>
+        ) : null}
+      </View>
     </Pressable>
   );
 }
@@ -87,8 +91,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     backgroundColor: Colors.surface,
     borderRadius: 12,
-    padding: Spacing.md,
-    justifyContent: 'space-between',
+    padding: Spacing.sm,
   },
   todayContainer: {
     borderWidth: 2,
@@ -117,26 +120,33 @@ const styles = StyleSheet.create({
   pastText: {
     color: Colors.textMuted,
   },
-  content: {
+  middle: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
-  mealTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-  },
-  emptyState: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
+  recipeImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
   },
   addButton: {
-    fontSize: 24,
+    fontSize: 28,
     color: Colors.textMuted,
+  },
+  bottom: {
+    height: 20,
+    justifyContent: 'flex-end',
+  },
+  recipeTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.text,
+    textAlign: 'center',
   },
   todayLabel: {
     fontSize: 12,
     color: Colors.calendarAccent,
+    textAlign: 'center',
   },
 });

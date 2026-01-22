@@ -100,5 +100,12 @@ const styles = StyleSheet.create({
   },
   emptySpacer: {
     flex: 1,
+    // Invisible spacer to maintain grid alignment
+  },
+  // Make single cards (like Sunday) half-width instead of full
+  singleCardRow: {
+    flexDirection: 'row',
+    height: CARD_HEIGHT,
+    gap: CARD_GAP,
   },
 });
