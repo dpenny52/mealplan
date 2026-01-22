@@ -1,29 +1,27 @@
-import { useRef, useMemo, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { useRef, useMemo, useState, useCallback } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import PagerView from 'react-native-pager-view';
 import { Colors, Spacing } from '@/constants/theme';
 import { useMealPlanMap, useSetMeal, useClearMeal } from '@/hooks/useMealPlans';
-import { get4WeekWindow, groupIntoWeeks, THIS_WEEK_INDEX } from '@/utils/dateUtils';
-import { WeekRow, WEEK_ROW_HEIGHT } from '@/components/planner/WeekRow';
+import { getExtendedWeeks } from '@/utils/dateUtils';
+import { PastHistory } from '@/components/planner/PastHistory';
+import { WeekPage } from '@/components/planner/WeekPage';
 import { RecipePickerModal } from '@/components/planner/RecipePickerModal';
-import type { WeekData, DayData } from '@/utils/dateUtils';
+import type { DayData } from '@/utils/dateUtils';
 import type { Id } from '../../../convex/_generated/dataModel';
 
+const THIS_WEEK_INDEX = 2; // Center of 5 weeks
+
 /**
- * Meal Planner screen showing 4-week calendar.
- * Auto-scrolls to "This week" on mount.
- * Past days are dimmed and non-interactive.
- *
- * Day interactions:
- * - Tap empty day: open recipe picker to assign meal
- * - Tap assigned day: navigate to recipe detail
- * - Long-press assigned day: open picker to change/clear meal
+ * Meal Planner screen with horizontal swipeable weeks.
+ * Shows Past History section at top and 2-column day grid.
  */
 export default function PlannerScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const flatListRef = useRef<FlatList<WeekData>>(null);
+  const pagerRef = useRef<PagerView>(null);
   const mealPlanMap = useMealPlanMap();
 
   // Modal state
@@ -35,24 +33,8 @@ export default function PlannerScreen() {
   const setMeal = useSetMeal();
   const clearMeal = useClearMeal();
 
-  // Compute weeks data (memoized for stability)
-  const weeks = useMemo(() => {
-    const days = get4WeekWindow();
-    return groupIntoWeeks(days);
-  }, []);
-
-  // Auto-scroll to "This week" on mount
-  useEffect(() => {
-    // Small delay to ensure FlatList is mounted and layout is complete
-    const timer = setTimeout(() => {
-      flatListRef.current?.scrollToIndex({
-        index: THIS_WEEK_INDEX,
-        animated: false,
-      });
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
+  // Compute weeks data (5 weeks: 2 past, current, 2 future)
+  const weeks = useMemo(() => getExtendedWeeks(), []);
 
   /**
    * Handle day tap:
@@ -60,29 +42,27 @@ export default function PlannerScreen() {
    * - If has meal: navigate to recipe detail
    * - If empty: open picker to assign meal
    */
-  const handleDayPress = (day: DayData) => {
+  const handleDayPress = useCallback((day: DayData) => {
     if (day.isPast) return;
 
     const mealPlan = mealPlanMap?.get(day.dateKey);
 
     if (mealPlan?.recipeId) {
-      // Navigate to recipe detail
       router.push(`/recipe/${mealPlan.recipeId}`);
     } else {
-      // Open picker to assign meal
       setSelectedDate(day.dateKey);
       setEditingMealId(undefined);
       setPickerVisible(true);
     }
-  };
+  }, [mealPlanMap, router]);
 
   /**
    * Handle day long-press:
    * - If past day: do nothing
-   * - If has meal: open picker in edit mode (can change or clear)
+   * - If has meal: open picker in edit mode
    * - If empty: open picker (same as tap)
    */
-  const handleDayLongPress = (day: DayData) => {
+  const handleDayLongPress = useCallback((day: DayData) => {
     if (day.isPast) return;
 
     const mealPlan = mealPlanMap?.get(day.dateKey);
@@ -90,61 +70,42 @@ export default function PlannerScreen() {
     setSelectedDate(day.dateKey);
     setEditingMealId(mealPlan?.recipeId);
     setPickerVisible(true);
-  };
-
-  /**
-   * Handle recipe selection from picker.
-   * Sets meal for the selected date and closes modal.
-   */
-  const handleRecipeSelect = (recipeId: Id<'recipes'>) => {
-    if (selectedDate) {
-      setMeal({ date: selectedDate, recipeId });
-    }
-    handlePickerClose();
-  };
-
-  /**
-   * Handle clear meal action.
-   * Removes meal from the selected date and closes modal.
-   */
-  const handleClearMeal = () => {
-    if (selectedDate) {
-      clearMeal({ date: selectedDate });
-    }
-    handlePickerClose();
-  };
+  }, [mealPlanMap]);
 
   /**
    * Close picker and reset modal state.
    */
-  const handlePickerClose = () => {
+  const handlePickerClose = useCallback(() => {
     setPickerVisible(false);
     setSelectedDate(null);
     setEditingMealId(undefined);
-  };
+  }, []);
 
-  // getItemLayout for consistent scroll behavior with fixed height rows
-  const getItemLayout = (_: any, index: number) => ({
-    length: WEEK_ROW_HEIGHT,
-    offset: WEEK_ROW_HEIGHT * index,
-    index,
-  });
+  /**
+   * Handle recipe selection from picker.
+   */
+  const handleRecipeSelect = useCallback((recipeId: Id<'recipes'>) => {
+    if (selectedDate) {
+      setMeal({ date: selectedDate, recipeId });
+    }
+    handlePickerClose();
+  }, [selectedDate, setMeal, handlePickerClose]);
 
-  // Render a single week row
-  const renderWeek = ({ item }: { item: WeekData }) => (
-    <WeekRow
-      week={item}
-      mealPlanMap={mealPlanMap}
-      onDayPress={handleDayPress}
-      onDayLongPress={handleDayLongPress}
-    />
-  );
+  /**
+   * Handle clear meal action.
+   */
+  const handleClearMeal = useCallback(() => {
+    if (selectedDate) {
+      clearMeal({ date: selectedDate });
+    }
+    handlePickerClose();
+  }, [selectedDate, clearMeal, handlePickerClose]);
 
-  // Loading state while fetching meal plan data
+  // Loading state
   if (mealPlanMap === undefined) {
     return (
       <View style={[styles.container, styles.centered, { paddingTop: insets.top }]}>
-        <ActivityIndicator size="large" color={Colors.primary} />
+        <ActivityIndicator size="large" color={Colors.calendarAccent} />
         <Text style={styles.loadingText}>Loading meal plans...</Text>
       </View>
     );
@@ -152,26 +113,27 @@ export default function PlannerScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <Text style={styles.title}>Meal Planner</Text>
+      {/* Past History section */}
+      <PastHistory mealPlanMap={mealPlanMap} />
 
-      <FlatList
-        ref={flatListRef}
-        data={weeks}
-        renderItem={renderWeek}
-        keyExtractor={(week) => week.weekIndex.toString()}
-        getItemLayout={getItemLayout}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
-        onScrollToIndexFailed={(info) => {
-          // Fallback: try again after a short delay
-          setTimeout(() => {
-            flatListRef.current?.scrollToIndex({
-              index: info.index,
-              animated: false,
-            });
-          }, 100);
-        }}
-      />
+      {/* Swipeable week pager */}
+      <PagerView
+        ref={pagerRef}
+        style={styles.pager}
+        initialPage={THIS_WEEK_INDEX}
+        overdrag
+      >
+        {weeks.map((week) => (
+          <View key={week.weekIndex} style={styles.pageContainer}>
+            <WeekPage
+              week={week}
+              mealPlanMap={mealPlanMap}
+              onDayPress={handleDayPress}
+              onDayLongPress={handleDayLongPress}
+            />
+          </View>
+        ))}
+      </PagerView>
 
       <RecipePickerModal
         visible={pickerVisible}
@@ -194,18 +156,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: Colors.text,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.md,
-  },
   loadingText: {
     color: Colors.textSecondary,
     marginTop: Spacing.md,
   },
-  listContent: {
-    paddingBottom: Spacing.lg,
+  pager: {
+    flex: 1,
+  },
+  pageContainer: {
+    flex: 1,
   },
 });
