@@ -12,6 +12,7 @@ interface DayCardProps {
   mealPlan?: MealPlanWithRecipe;
   onPress: (day: DayData) => void;
   onLongPress: (day: DayData) => void;
+  width: number;
 }
 
 /**
@@ -19,7 +20,7 @@ interface DayCardProps {
  * Shows day name, date number, recipe image (center), and title (bottom).
  * Green border highlight for current day.
  */
-export function DayCard({ day, mealPlan, onPress, onLongPress }: DayCardProps) {
+export function DayCard({ day, mealPlan, onPress, onLongPress, width }: DayCardProps) {
   const { date, isToday, isPast } = day;
   const dayName = format(date, 'EEE'); // Mon, Tue, etc.
   const dayNumber = format(date, 'd');
@@ -42,6 +43,7 @@ export function DayCard({ day, mealPlan, onPress, onLongPress }: DayCardProps) {
     <Pressable
       style={[
         styles.container,
+        { width },
         isToday && styles.todayContainer,
         isPast && styles.pastContainer,
       ]}
@@ -87,7 +89,6 @@ export function DayCard({ day, mealPlan, onPress, onLongPress }: DayCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     height: CARD_HEIGHT,
     backgroundColor: Colors.surface,
     borderRadius: 12,

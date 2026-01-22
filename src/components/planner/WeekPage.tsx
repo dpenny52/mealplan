@@ -7,6 +7,9 @@ import type { MealPlanWithRecipe } from '@/hooks/useMealPlans';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_GAP = Spacing.sm;
+const HORIZONTAL_PADDING = Spacing.sm;
+// Calculate card width: (screen - 2*padding - gap) / 2
+export const CARD_WIDTH = (SCREEN_WIDTH - 2 * HORIZONTAL_PADDING - CARD_GAP) / 2;
 
 interface WeekPageProps {
   week: WeekData;
@@ -54,10 +57,9 @@ export function WeekPage({
                 mealPlan={mealPlanMap?.get(day.dateKey)}
                 onPress={onDayPress}
                 onLongPress={onDayLongPress}
+                width={CARD_WIDTH}
               />
             ))}
-            {/* Add empty spacer if row has only 1 day (Sunday) */}
-            {row.length === 1 && <View style={styles.emptySpacer} />}
           </View>
         ))}
       </View>
@@ -94,16 +96,6 @@ const styles = StyleSheet.create({
     gap: CARD_GAP,
   },
   row: {
-    flexDirection: 'row',
-    height: CARD_HEIGHT,
-    gap: CARD_GAP,
-  },
-  emptySpacer: {
-    flex: 1,
-    // Invisible spacer to maintain grid alignment
-  },
-  // Make single cards (like Sunday) half-width instead of full
-  singleCardRow: {
     flexDirection: 'row',
     height: CARD_HEIGHT,
     gap: CARD_GAP,
