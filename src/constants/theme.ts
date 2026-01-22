@@ -12,6 +12,8 @@ export const Colors = {
   surface: '#1E1E1E',
   /** Primary accent color - warm orange/amber */
   primary: '#FF9800',
+  /** Calendar accent color - green for today highlight */
+  calendarAccent: '#4CAF50',
   /** Main text color - off-white for reduced eye strain */
   text: '#E0E0E0',
   /** Secondary text - muted for less important content */
