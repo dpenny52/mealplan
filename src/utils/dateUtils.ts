@@ -55,6 +55,20 @@ export interface WeekData {
   days: DayData[];
 }
 
+/**
+ * Return type for getExtendedDateRange() - metadata about the 5-week calendar range.
+ */
+export interface ExtendedDateRange {
+  /** Start date in YYYY-MM-DD format */
+  startDate: string;
+  /** End date in YYYY-MM-DD format */
+  endDate: string;
+  /** Total number of weeks (always 5) */
+  totalWeeks: number;
+  /** Index of "this week" in the range (always 2) */
+  thisWeekIndex: number;
+}
+
 /** Index of "this week" in the 4-week window */
 export const THIS_WEEK_INDEX = 2;
 
@@ -163,5 +177,100 @@ export function formatWeekRange(weekStart: Date): string {
  */
 export function getWeekLabel(weekIndex: number): string {
   const labels = ['2 weeks ago', 'Last week', 'This week', 'Next week'];
+  return labels[weekIndex] ?? '';
+}
+
+/**
+ * Returns extended date range for swipeable calendar (5 weeks total).
+ * - 2 weeks ago
+ * - Last week
+ * - This week (center/default)
+ * - Next week
+ * - 2 weeks from now
+ */
+export function getExtendedDateRange(): ExtendedDateRange {
+  const today = new Date();
+  const thisWeekStart = startOfWeek(today, { weekStartsOn: 1 });
+  const windowStart = subWeeks(thisWeekStart, 2);
+  const windowEnd = addWeeks(thisWeekStart, 2);
+  const actualEnd = new Date(windowEnd);
+  actualEnd.setDate(actualEnd.getDate() + 6);
+
+  return {
+    startDate: formatDateKey(windowStart),
+    endDate: formatDateKey(actualEnd),
+    totalWeeks: 5,
+    thisWeekIndex: 2,
+  };
+}
+
+/**
+ * Returns array of weeks for the extended calendar range.
+ */
+export function getExtendedWeeks(): WeekData[] {
+  const today = new Date();
+  const thisWeekStart = startOfWeek(today, { weekStartsOn: 1 });
+  const windowStart = subWeeks(thisWeekStart, 2);
+  const windowEnd = addWeeks(thisWeekStart, 2);
+  const actualEnd = new Date(windowEnd);
+  actualEnd.setDate(actualEnd.getDate() + 6);
+
+  const days = eachDayOfInterval({ start: windowStart, end: actualEnd });
+  return groupIntoWeeksExtended(days);
+}
+
+/**
+ * Groups days into WeekData objects for extended 5-week range.
+ */
+function groupIntoWeeksExtended(days: Date[]): WeekData[] {
+  const weeks: WeekData[] = [];
+  const todayStart = startOfDay(new Date());
+  const numWeeks = Math.ceil(days.length / 7);
+
+  for (let weekIndex = 0; weekIndex < numWeeks; weekIndex++) {
+    const weekDays = days.slice(weekIndex * 7, (weekIndex + 1) * 7);
+    if (weekDays.length === 0) continue;
+
+    const weekStart = weekDays[0];
+
+    weeks.push({
+      weekStart,
+      weekIndex,
+      days: weekDays.map((date) => ({
+        date,
+        dateKey: formatDateKey(date),
+        isToday: isDateToday(date),
+        isPast: isBefore(date, todayStart),
+      })),
+    });
+  }
+
+  return weeks;
+}
+
+/**
+ * Formats week range in short uppercase format: "JAN 19-25" or "JAN 26-FEB 1"
+ */
+export function formatWeekRangeShort(weekStart: Date): string {
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+
+  const startMonth = format(weekStart, 'MMM').toUpperCase();
+  const startDay = format(weekStart, 'd');
+  const endDay = format(weekEnd, 'd');
+
+  if (isSameMonth(weekStart, weekEnd)) {
+    return `${startMonth} ${startDay}-${endDay}`;
+  }
+
+  const endMonth = format(weekEnd, 'MMM').toUpperCase();
+  return `${startMonth} ${startDay}-${endMonth} ${endDay}`;
+}
+
+/**
+ * Returns label for week in extended range.
+ */
+export function getExtendedWeekLabel(weekIndex: number): string {
+  const labels = ['2 WEEKS AGO', 'LAST WEEK', 'THIS WEEK', 'NEXT WEEK', 'IN 2 WEEKS'];
   return labels[weekIndex] ?? '';
 }
